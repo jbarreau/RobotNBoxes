@@ -1,0 +1,49 @@
+import interfaces.*
+import interfaces.IAction
+
+namespace Robot{
+	component Action{
+		requires decision : IAction
+		
+		provides environement : IEnvAction
+	}
+	
+	component Decision{
+		requires knowledgeBase : IKnowledgeBaseGet
+		requires perception : IPerception
+		
+		provides action : IAction
+	}
+	
+	component Perception{
+		requires environement : IEnvPerception
+		
+		provides decision : IPerception
+	}
+	
+	component KnowledgeBase{
+		provides get : IKnowledgeBaseGet
+		provides put : IKnowledgeBasePut
+	}
+	
+	component Robot {
+		requires environementPerception : IEnvPerception
+		
+		provides environementAction : IEnvAction
+		
+		
+		part action : Action{
+			bind decision to decision.action
+		}
+		part decision : Decision{
+			bind knowledgeBase to knowledgeBase.get
+			bind perception to perception.decision
+		}
+		part knowledgeBase : KnowledgeBase
+		part perception : Perception{
+			bind environement to environementPerception
+		}
+	}
+	
+	
+}
