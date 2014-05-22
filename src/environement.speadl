@@ -1,5 +1,20 @@
 import interfaces.*
 
 namespace Environement{
+	/*component Map{
+		
+	}*/
+	
+	component Boxeslist{
+		
+	}
+	
+	component RobotsList{
+		
+	}
+	
+	component ObstaclesList{
+		
+	}
 	
 }
