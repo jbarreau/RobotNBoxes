@@ -1,20 +1,59 @@
-import interfaces.*
+import interfaces.IBoxRobot
+import interfaces.IEnvAction
+import interfaces.IEnvPerception
+import interfaces.IMapRobot
+import Robot.RobotMain
+import interfaces.IObstacleRobot
 
 namespace Environement{
-	/*component Map{
+	// object definition
+	//robot already declare
 		
-	}*/
-	
-	component Boxeslist{
-		
+	//  lists definition
+	/*component Boxeslist{
+		provides boxes : IBoxesList
 	}
-	
 	component RobotsList{
-		
+		provides robots : IrobotsList
+	}
+	component ObstaclesList{
+		provides robots : IObstaclesList
+	}*/
+	 
+	component Dispatcher{
+		//requires box : IBoxRobot
+		//requires obstacle : IObstacleRobot
+		provides robot : IEnvPerception
+	}
+	component Joinner{
+		provides robot : IEnvAction
 	}
 	
-	component ObstaclesList{
+	//  map definition
+	ecosystem Map{
+		part dispatch : Dispatcher
+		part joinner : Joinner
 		
+		species Box{
+			provides robot : IBoxRobot	
+		}
+		species Obstacle{
+			provides robot : IObstacleRobot
+		}
+		species Robot{
+			requires environementPerception : IEnvPerception
+			requires environementAction : IEnvAction
+			provides map : IMapRobot
+			
+			part robotMain : RobotMain{
+				bind environementAction to environementAction
+				bind environementPerception to environementPerception
+			}
+		}
+		//part obstacles : ObstaclesList
+		//part robotsList : RobotsList
+		//part boxesList : Boxeslist
 	}
+	
 	
 }

@@ -1,5 +1,7 @@
 package interfaces;
 
+import Environement.Map.Robot;
+
 public interface IAction {
 	//  moving functions
 	public void goUp();
@@ -8,12 +10,10 @@ public interface IAction {
 	public void goLeft();
 	
 	//  boxes functions
-	//public Box takeBox(Direction from);
-	public void takeBox();
+	//public void takeBox(Box b);
 	public void putDownBox(); 
 	
 	//  fun functions
 	public void killMyself();
-	//public Robot createRobot();
-	public void createRobot();
-}
+	public Robot createRobot();
+	}

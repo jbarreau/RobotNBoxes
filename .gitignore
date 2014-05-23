@@ -1,2 +1,4 @@
 bin/
 speadl-gen/
+.classpath
+.project
