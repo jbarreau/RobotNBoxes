@@ -1,0 +1,24 @@
+import Environement.Environement
+
+namespace Main{
+	component GUI{
+		
+	}
+	component GameManager{
+		
+	}
+	
+	ecosystem Main{
+		species Robot{
+			
+		}
+		
+		part environement : Environement{
+			
+		} 
+		
+		part gui : GUI
+		part gameManager : GameManager
+			
+	}
+}
