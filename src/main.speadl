@@ -1,24 +1,39 @@
 import Environement.Environement
+import interfaces.IGUIEnvironement
+import interfaces.IGUIManager
+import interfaces.IMain
+import interfaces.IRunner
 
-namespace Main{
+namespace MainSys{   
 	component GUI{
-		
+		requires gameManager : IGUIManager
+		requires environnement : IGUIEnvironement
 	}
 	component GameManager{
-		
+		provides gui : IGUIManager
+		provides runner : IRunner
+		//requires runner : IRunner
 	}
 	
-	ecosystem Main{
-		species Robot{
+	ecosystem MainSys{
+		provides main : IMain
+		
+		species Robot{ 
 			
 		}
 		
-		part environement : Environement{
-			
+		part environement : Environement{ 
+			 
 		} 
 		
-		part gui : GUI
-		part gameManager : GameManager
+		part gui : GUI{
+			bind environnement to environement.gui
+			bind gameManager to gameManager.gui 
+		}
+		
+		part gameManager : GameManager{
+			
+		}
 			
 	}
 }

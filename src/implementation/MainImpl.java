@@ -1,11 +1,21 @@
 package implementation;
 
+import implementation.gui.GUIImpl;
+import interfaces.IMain;
 import Environement.Environement;
-import Main.GUI;
-import Main.GameManager;
-import Main.Main;
+import MainSys.GUI;
+import MainSys.GameManager;
+import MainSys.MainSys;
 
-public class MainImpl extends Main{
+
+
+public class MainImpl extends MainSys{
+
+	@Override
+	protected IMain make_main() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	protected Environement make_environement() {
@@ -15,7 +25,7 @@ public class MainImpl extends Main{
 
 	@Override
 	protected GUI make_gui() {
-		// TODO Auto-generated method stub
+		GUI gui = new GUIImpl();
 		return null;
 	}
 

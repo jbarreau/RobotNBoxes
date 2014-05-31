@@ -11,7 +11,7 @@ namespace Robot{
 		
 		provides action : IAction
 	}
-	
+	 
 	component Perception{
 		requires environement : IEnvPerception 
 		requires knowledgeBase : IKnowledgeBasePut
@@ -24,7 +24,7 @@ namespace Robot{
 		provides put : IKnowledgeBasePut
 	}
 	 */
-	component Robot {
+	component Robot { 
 		/*
 		requires environementPerception : IEnvPerception
 		requires environementAction : IEnvAction
