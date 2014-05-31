@@ -36,6 +36,7 @@ public class MapView extends JPanel {
 	private static int mapHeight = 30; // 29.6 mesured
 	private int screenWidth ;
 	private int screenHeight ;
+	private GUIImpl parent;
 	
 	private double ratio ;
 	
@@ -48,15 +49,16 @@ public class MapView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MapView(int x, int y) {
+	public MapView(int x, int y, GUIImpl Pparent) {
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(null);
+		parent = Pparent;
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		data = update();
+		data = parent.update();
 		paintMap(g);
 	}
 	

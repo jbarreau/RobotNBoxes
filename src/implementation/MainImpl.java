@@ -26,7 +26,7 @@ public class MainImpl extends MainSys{
 	@Override
 	protected GUI make_gui() {
 		GUI gui = new GUIImpl();
-		return null;
+		return gui;
 	}
 
 	@Override

@@ -1,13 +1,16 @@
 package implementation.gui;
 
 
+import interfaces.MapObject;
+import interfaces.Position;
+
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import MainSys.GUI;
  
@@ -40,6 +43,10 @@ public class GUIImpl extends GUI {
 		frame.setVisible(true);
 	}
 
+	public Map<Position, MapObject> update(){
+		return requires().environnement().update();
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -57,7 +64,7 @@ public class GUIImpl extends GUI {
 		
 		System.out.println("height : " +frame.getContentPane().getLayout());
 		
-		mapView = new MapView(400, 200);
+		mapView = new MapView(400, 200, this);
 		GridBagConstraints gbc_mapView = new GridBagConstraints();
 		gbc_mapView.insets = new Insets(0, 0, 5, 0);
 		gbc_mapView.fill = GridBagConstraints.BOTH;
