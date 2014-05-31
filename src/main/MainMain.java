@@ -1,14 +1,14 @@
 package main;
 
 import implementation.MainImpl;
-import Main.Main;
+import implementation.gui.GUIImpl;
+import MainSys.GUI;
+import MainSys.MainSys;
 
 
 
-public class MainMain {
+
+public class MainMain { 
 	public static void main(String args[]){
-		MainImpl m = new MainImpl();
-		Main.Component comp = m._newComponent(null, true);
-		
 	}
 }
