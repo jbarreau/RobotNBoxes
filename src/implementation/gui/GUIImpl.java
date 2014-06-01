@@ -2,7 +2,6 @@ package implementation.gui;
 
 
 import interfaces.MapObject;
-import interfaces.Position;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -29,6 +28,7 @@ import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import objet.Position;
 import MainSys.GUI;
  
 public class GUIImpl extends GUI {
@@ -65,7 +65,7 @@ public class GUIImpl extends GUI {
 	}
 
 	public Map<Position, MapObject> update(){
-		return requires().environnement().update();
+		return null;//requires().environnement().update();
 	}
 	
 	/**
