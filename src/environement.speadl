@@ -1,8 +1,10 @@
 import interfaces.IGUIEnvironement
+import interfaces.IEnvManager
 
 namespace Environement{
 	component Environement{
 		provides gui : IGUIEnvironement
+		provides gameManager : IEnvManager
 		
 	}
 }  

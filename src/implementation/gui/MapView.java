@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import MainSys.GUI;
+import javax.swing.JLabel;
 
 
 public class MapView extends JPanel {
@@ -22,6 +23,7 @@ public class MapView extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private static int refreshDelay = 500;//milliseconds
 	private static Color colorBackGround = Color.WHITE;
 	private static Color colorBorder = Color.BLACK;
 	private static Color colorBox = Color.YELLOW;
@@ -40,8 +42,7 @@ public class MapView extends JPanel {
 	
 	private double ratio ;
 	
-	public Map<Position, MapObject> data = update();
-	
+	public Map<Position, MapObject> data = null;
 
 	private Rectangle zoneFrom = new Rectangle(0, 5, 10, mapHeight-10);
 	private Rectangle zoneTo = new Rectangle(mapWidth - 10, 5, 10, mapHeight-10);
@@ -50,9 +51,37 @@ public class MapView extends JPanel {
 	 * Create the panel.
 	 */
 	public MapView(int x, int y, GUIImpl Pparent) {
+		parent = Pparent;
+		init(x , y);
+	}
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public MapView(int x, int y) {
+		init(x , y);
+	}
+	public void init(int x , int y){
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(null);
-		parent = Pparent;
+		
+		Runnable refreshDatas = new Runnable() {
+			@Override
+			public void run() {
+				while(true){
+					try {
+						//repaint();
+						updateUI();
+						Thread.sleep(refreshDelay);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		 
+		Thread threadRefresh = new Thread(refreshDatas);
+		threadRefresh.start();
 	}
 
 	@Override
@@ -61,7 +90,6 @@ public class MapView extends JPanel {
 		data = parent.update();
 		paintMap(g);
 	}
-	
 	
 	public void refreshScreenSize(){
 		screenHeight = getHeight();
@@ -77,8 +105,6 @@ public class MapView extends JPanel {
 		}
 	}
 
-
-
 	public void paintZones(Graphics g, Rectangle map){	
 		g.setColor(colorZoneFrom);
 		g.fillRect(map.x + (int)(zoneFrom.x*ratio), map.y + (int)(zoneFrom.y*ratio), 
@@ -91,6 +117,10 @@ public class MapView extends JPanel {
 	}
 
 	public void paintDatas(Graphics g, Rectangle map){
+		if (data == null){
+			data = parent.update();
+		}
+		
 		for (Position p : data.keySet()){
 			
 			if(data.get(p) == MapObject.None) {//NONE
@@ -118,7 +148,6 @@ public class MapView extends JPanel {
 				g.fill3DRect(map.x + (int)(p.getX()*ratio), map.y + (int)(p.getY()*ratio) , 
 						(int)(1*ratio), (int)(1*ratio), true);
 				
-				System.out.println("min Robot Size : " + ratio);
 			}
 			else if(data.get(p) == MapObject.RobotFull) {//ROBOT FULL
 				g.setColor(colorRobotWithBox);
@@ -128,12 +157,12 @@ public class MapView extends JPanel {
 			
 		}
 	}
+	
 	private boolean inZoneTo(Position p) {
 		return  (p.getX() <mapWidth && p.getX() > mapWidth -10
 				&&
 			p.getY()> 5 && p.getY()<mapHeight - 5);
 	}
-
 	private boolean inZoneFrom(Position p) {
 		return  (p.getX() <10 && p.getX() >= 0
 				&&
@@ -164,79 +193,4 @@ public class MapView extends JPanel {
 		paintZones(g, map);
 		paintDatas(g, map);
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public Map<Position, MapObject> update() {
-		 Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
-
-		 //None
-		 for (int i = 0 ; i< 80; i++){
-			 for (int j = 0 ; j < 30 ;  j++){
-				 	ret.put(new Position(i ,j), MapObject.None);
-			 }
-		 }
-		 //box
-		 for (int i = 0 ; i< 10 ; i++){
-			 for (int j = 5 ; j < 20 ;  j++){
-				 	System.out.println("Box : " + i +" "+ j);
-				 	ret.put(new Position(i, j ), MapObject.Box);
-			 }
-		 }
-		 //obstacles
-		 for (int i = 25 ; i< 53 ; i++){
-			 for (int j = 1 ; j < 29 ;  j++){
-				 	System.out.println("obstacles : " + i +" "+ j);
-				 	ret.put(new Position(i, j ), MapObject.Obstacle);
-			 }
-		 }
-		 //robots
-		 Random r = new Random();
-		 r.setSeed(r.nextInt());;
-	 	 int nbR = 0;
-		 while(nbR < 80){
-			 	int rI = r.nextInt(15)+10;
-			 	int rJ = r.nextInt(30);
-				 System.out.println("robot : " + rI +" "+ rJ);
-			 	ret.put(new Position(rI, rJ ), MapObject.RobotEmpty);
-			 	nbR ++;
-		 }
-		 return ret;
-	}
-	
 }

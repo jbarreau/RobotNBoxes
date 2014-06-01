@@ -3,20 +3,22 @@ import interfaces.IGUIEnvironement
 import interfaces.IGUIManager
 import interfaces.IMain
 import interfaces.IRunner
+import interfaces.IEnvManager
 
 namespace MainSys{   
 	component GUI{
 		requires gameManager : IGUIManager
 		requires environnement : IGUIEnvironement
 	}
+	
 	component GameManager{
 		provides gui : IGUIManager
 		provides runner : IRunner
+		requires environement : IEnvManager
 		//requires runner : IRunner
 	}
 	
 	ecosystem MainSys{
-		provides main : IMain
 		
 		species Robot{ 
 			
@@ -32,7 +34,7 @@ namespace MainSys{
 		}
 		
 		part gameManager : GameManager{
-			
+			bind environement to environement.gameManager 
 		}
 			
 	}

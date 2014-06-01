@@ -3,10 +3,25 @@ package interfaces;
 public class Position {
 	private int x;
 	private int y;
+	private int id= -1;
 	
 	public Position(int Px, int Py){
 		x = Px;
 		y = Py;
+	}
+	
+	public Position(int Px, int Py, int Pid){
+		x = Px;
+		y = Py;
+		id = Pid;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getX() {
