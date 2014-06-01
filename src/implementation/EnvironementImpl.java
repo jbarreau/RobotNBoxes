@@ -29,7 +29,7 @@ public class EnvironementImpl extends Environement {
 		// Robots
 		Random r = new Random();
 		r.setSeed(r.nextInt());
-		for(Robot robot : robots){
+		for(Robot robot : robots) {
 			int rI = r.nextInt(15)+10;
 			int rJ = r.nextInt(30);
 			System.out.println("Robot : " + rI +" "+ rJ);
@@ -37,7 +37,7 @@ public class EnvironementImpl extends Environement {
 		}
 		//box
 		for (int i = 0 ; i< 10 ; i++){
-			for (int j = 5 ; j < 20 ; j++){
+			for (int j = 5 ; j < 25 ; j++){
 				System.out.println("Box : " + i +" "+ j);
 				boxMap.put(new Box(), new Position(i, j ));
 			}
