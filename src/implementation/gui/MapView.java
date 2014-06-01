@@ -5,16 +5,12 @@ import interfaces.MapObject;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import objet.Position;
-import MainSys.GUI;
-import javax.swing.JLabel;
 
 
 public class MapView extends JPanel {
@@ -187,10 +183,9 @@ public class MapView extends JPanel {
 		
 		g.setColor(colorBackGround);
 		g.fillRect(x+1, y+1, width-2, height-2);
-		Rectangle map = new Rectangle(x+1, y+1, width-2, height-2);
-		
+		Rectangle map = new Rectangle(x+1, y+1, width-2, height-2);	
 
 		paintZones(g, map);
-		paintDatas(g, map);
+		//paintDatas(g, map);
 	}
 }

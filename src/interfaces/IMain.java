@@ -1,5 +1,7 @@
 package interfaces;
 
+import MainSys.EcoRobot.Robot;
+
 public interface IMain {
-	public void createRobot();
+	public Robot createRobot();
 }

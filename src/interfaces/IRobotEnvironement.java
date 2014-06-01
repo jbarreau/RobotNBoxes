@@ -5,7 +5,7 @@ import java.util.Map;
 
 import objet.Box;
 import objet.Position;
-import MainSys.MainSys.Robot;
+import MainSys.EcoRobot.Robot;
 
 public interface IRobotEnvironement {
 //perception

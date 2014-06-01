@@ -3,6 +3,7 @@ package implementation;
 import interfaces.IEnvManager;
 import interfaces.IGUIEnvironement;
 import interfaces.IRobotEnvironement;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +14,8 @@ import java.util.Random;
 import objet.Box;
 import objet.Obstacle;
 import objet.Position;
-import Environement.Environement;
-import MainSys.MainSys.Robot;
+import MainSys.EcoRobot.Robot;
+import MainSys.Environement;
 
 public class EnvironementImpl extends Environement {
 	
@@ -150,8 +151,10 @@ public class EnvironementImpl extends Environement {
 			}
 		};
 	}
-	
-	protected IRobotEnvironement make_robotEnvironement() {
+
+	@Override
+	protected IRobotEnvironement make_robot() {
+		// TODO Auto-generated method stub
 		return new IRobotEnvironement() {
 			
 			@Override
@@ -206,7 +209,6 @@ public class EnvironementImpl extends Environement {
 				}
 				return perceptionMap;
 			}
-			
 		};
 	}
 

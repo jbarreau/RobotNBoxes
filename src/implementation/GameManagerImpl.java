@@ -1,16 +1,41 @@
 package implementation;
 
-import java.io.Serializable;
-
-import sun.font.EAttribute;
 import interfaces.IGUIManager;
 import interfaces.IRunner;
+
+import java.io.Serializable;
+
 import MainSys.GameManager;
 
 public class GameManagerImpl extends GameManager {
 	private boolean paused = false;
 	private boolean stop = false;
 	private double speed = 1;
+	
+	public GameManagerImpl(){
+		Thread tick = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while(true){
+						while ( !stop){
+							while (!paused){
+								Thread.sleep((long) (1000 / speed));
+								requires().runner().play(); // I thing that doesn't work								
+							}
+							Thread.sleep(100 );
+						}
+						Thread.sleep(100 );
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		tick.start();
+	}
+	
 	@Override
 	protected IGUIManager make_gui() {
 		// TODO Auto-generated method stub
@@ -56,31 +81,5 @@ public class GameManagerImpl extends GameManager {
 		};
 	}
 
-	@Override
-	protected IRunner make_runner() {
-		// TODO Auto-generated method stub
-		return new IRunner() {
-			
-			@Override
-			public void play() {
-				try {
-					while(true){
-						while ( !stop){
-							while (!paused){
-								Thread.sleep((long) (1000 / speed));
-								provides().runner().play(); // I thing that doesn't work								
-							}
-							Thread.sleep(100 );
-						}
-						Thread.sleep(100 );
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-		};
-	}
 
 }

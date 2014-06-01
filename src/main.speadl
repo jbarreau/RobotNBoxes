@@ -1,45 +1,69 @@
-import Environement.Environement
 import interfaces.IEnvManager
 import interfaces.IGUIEnvironement
 import interfaces.IGUIManager
 import interfaces.IRunner
 import interfaces.IMain
+import interfaces.IRobotEnvironement
+import interfaces.IConnaissance
 
 namespace MainSys{   
+	
+	component Environement{
+		provides gui : IGUIEnvironement
+		provides gameManager : IEnvManager
+		provides robot : IRobotEnvironement
+	}
+	
 	component GUI{
 		requires gameManager : IGUIManager
 		requires environnement : IGUIEnvironement
+		requires connaissance : IConnaissance
 	}
 	
 	component GameManager{
 		provides gui : IGUIManager
 		requires environement : IEnvManager
-		//requires runner : IRunner
-		provides runner : IRunner
+		requires runner : IRunner
 		requires main : IMain
 	}
 	
-	
-	ecosystem MainSys{
-		provides main : IMain
-		species Robot(id : int, desc : String){
+	ecosystem EcoRobot{
+		species Robot {
+			requires environement : IRobotEnvironement
 			provides runner : IRunner
+			provides connaissance : IConnaissance
+		}
+	}
+	
+	ecosystem MainSys {
+		
+		
+		species RequiringCompSpecies {
+			provides main : IMain
+			
+			use er : ecor.Robot {
+				bind environement to environement.robot
+			}
+			
+			part gui : GUI {
+				bind connaissance to er.connaissance
+				bind environnement to environement.gui
+				bind gameManager to gameManager.gui
+			}
+			
+			part gameManager : GameManager {
+				bind environement to environement.gameManager 
+				bind main to main
+				bind runner to er.runner
+			}
+			
+			part environement : Environement { 
+				
+			} 
+			
 		}
 		
-		part environement : Environement{ 
-			 
-		} 
-		
-		part gui : GUI{
-			bind environnement to environement.gui
-			bind gameManager to gameManager.gui 
-		}
-		
-		part gameManager : GameManager{
-			bind environement to environement.gameManager 
-			//bind runner to  
-			bind main to main
-		}
+		part ecor : EcoRobot
 			
 	}
 }
