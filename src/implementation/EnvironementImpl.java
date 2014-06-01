@@ -3,8 +3,6 @@ package implementation;
 import interfaces.IEnvManager;
 import interfaces.IGUIEnvironement;
 import interfaces.IRobotEnvironement;
-import interfaces.MapObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,16 +24,14 @@ public class EnvironementImpl extends Environement {
 	Map<Box, Position> boxMap = new HashMap<Box, Position>();
 	Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
 	private Random r = new Random( Map.class.hashCode() );
-	private Map<Position, MapObject> corridors = new HashMap<Position, MapObject>();
-	private List<Robot> robots;
 	
 	public EnvironementImpl(List<Robot> Probots){
-		robots = Probots;
 		for (int i = 25 ; i < 55 ; i++){
 			for (int j = 1 ; j < 29 ; j++){
 				obstacleMap.put(new Obstacle(), new Position(i, j));
 			}
 		}
+		//TODO robot list param
 	}
 	
 	private void randomCorridor() {
@@ -90,29 +86,20 @@ public class EnvironementImpl extends Environement {
 	protected IGUIEnvironement make_gui() {
 		// TODO Auto-generated method stub
 		return new IGUIEnvironement() {
-			
+
 			@Override
-			public String getLog(int robotId) {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Robot, Position> getRobots() {
+				return robotMap;
 			}
 
 			@Override
-			public Map<Robot, MapObject> getRobots() {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Box, Position> getBoxes() {
+				return boxMap;
 			}
 
 			@Override
-			public Map<Box, MapObject> getBoxes() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public Map<Obstacle, MapObject> getObstacles() {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Obstacle, Position> getObstacles() {
+				return obstacleMap;
 			}
 		};
 	}
@@ -140,7 +127,7 @@ public class EnvironementImpl extends Environement {
 			public void unserializeSystem(Serializable save) {
 				List<Position> out = (List<Position>) save;
 				for (Position p : out){
-					System.out.println("p : "+p.getX()+","+p.getY()+" : "+p.getId());
+					System.out.println("p : "+p.getX()+","+p.getY());
 				}
 				
 			}
