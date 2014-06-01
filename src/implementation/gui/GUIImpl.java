@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -28,7 +29,10 @@ import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import objet.Box;
+import objet.Obstacle;
 import objet.Position;
+import MainSys.EcoRobot.Robot;
 import MainSys.GUI;
  
 public class GUIImpl extends GUI {
@@ -64,8 +68,44 @@ public class GUIImpl extends GUI {
 		});
 	}
 
-	public Map<Position, MapObject> update(){
-		return null;//requires().environnement().update();
+
+	public Map<Position, MapObject> update() {
+		Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
+		Map<Robot,Position> robots = getRobots();
+		Map<Box,Position> boxes = getBoxes();
+		Map<Obstacle,Position> obstacles = getObstacles();
+
+		for (Robot r : robots.keySet()){
+			//if (r.)
+			if (robots.get(r) == null){
+				System.out.println("null pos for robot");
+			}
+			ret.put(robots.get(r), MapObject.RobotEmpty);
+			//if (requires().robot().)
+		}
+		for (Box b : boxes.keySet()){
+			if (boxes.get(b) == null){
+				System.out.println("null pos for box");
+			}
+			ret.put(boxes.get(b), MapObject.Box);
+		}
+		for (Obstacle o : obstacles.keySet()){
+			if (obstacles.get(o) == null){
+				System.out.println("null pos for obstacles");
+			}
+			ret.put(obstacles.get(o), MapObject.Obstacle);
+		}
+		
+		return ret;
+	}
+	public Map<Robot,Position> getRobots(){
+		return requires().environnement().getRobots();
+	}
+	public Map<Box,Position> getBoxes(){
+		return requires().environnement().getBoxes();
+	}	
+	public Map<Obstacle,Position> getObstacles(){
+		return requires().environnement().getObstacles();
 	}
 	
 	/**
@@ -102,64 +142,64 @@ public class GUIImpl extends GUI {
 		gbc_toolBar.gridy = 0;
 		frmSmaalViewer.getContentPane().add(toolBar, gbc_toolBar);
 		
-				JBPause = new JButton("pause");
-				JBPause.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						requires().gameManager().pause();
-					}
-				});
-				JBPlay = new JButton("play");
-				JBPlay.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						requires().gameManager().play();
-					}
-				});
-				JBStop = new JButton("stop");
-				JBStop.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						requires().gameManager().stop();
-					}
-				});
-				toolBar.add(JBPause);
-				toolBar.add(JBPlay);
-				toolBar.add(JBStop);
-				
-				JBSpeed = new JSlider();
-				JBSpeed.setMinimumSize(new Dimension(50, 26));
-				JBSpeed.setValue(1);
-				JBSpeed.setMaximumSize(new Dimension(100, 20));
-				JBSpeed.setMaximum(10);
-				JBSpeed.addChangeListener(new ChangeListener() {
-					@Override
-					public void stateChanged(ChangeEvent arg0) {
-						int value = JBSpeed.getValue();
-						if (value == 0 ){
-							lblCurrentSpeed.setText("current speed : 0,5");
-							requires().gameManager().speed(0.5);
-						}else{
-							lblCurrentSpeed.setText("current speed : "+JBSpeed.getValue()+",0");
-							requires().gameManager().speed(JBSpeed.getValue());
-						}
-					}
-				});
-				
-				JSeparator separator = new JSeparator();
-				toolBar.add(separator);
-				
-				labelMoin = new JLabel("-");
-				toolBar.add(labelMoin);
-				toolBar.add(JBSpeed);
-				
-				labelPlus = new JLabel("+");
-				toolBar.add(labelPlus);
-				
-				lblCurrentSpeed = new JLabel("current speed : 1,0");
-				toolBar.add(lblCurrentSpeed);
-				toolBar.setInheritsPopupMenu(true);
-				toolBar.setFloatable(false);
+		JBPause = new JButton("pause");
+		JBPause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				requires().gameManager().pause();
+			}
+		});
+		JBPlay = new JButton("play");
+		JBPlay.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				requires().gameManager().play();
+			}
+		});
+		JBStop = new JButton("stop");
+		JBStop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				requires().gameManager().stop();
+			}
+		});
+		toolBar.add(JBPause);
+		toolBar.add(JBPlay);
+		toolBar.add(JBStop);
+		
+		JBSpeed = new JSlider();
+		JBSpeed.setMinimumSize(new Dimension(50, 26));
+		JBSpeed.setValue(1);
+		JBSpeed.setMaximumSize(new Dimension(100, 20));
+		JBSpeed.setMaximum(10);
+		JBSpeed.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				int value = JBSpeed.getValue();
+				if (value == 0 ){
+					lblCurrentSpeed.setText("current speed : 0,5");
+					requires().gameManager().speed(0.5);
+				}else{
+					lblCurrentSpeed.setText("current speed : "+JBSpeed.getValue()+",0");
+					requires().gameManager().speed(JBSpeed.getValue());
+				}
+			}
+		});
+		
+		JSeparator separator = new JSeparator();
+		toolBar.add(separator);
+		
+		labelMoin = new JLabel("-");
+		toolBar.add(labelMoin);
+		toolBar.add(JBSpeed);
+		
+		labelPlus = new JLabel("+");
+		toolBar.add(labelPlus);
+		
+		lblCurrentSpeed = new JLabel("current speed : 1,0");
+		toolBar.add(lblCurrentSpeed);
+		toolBar.setInheritsPopupMenu(true);
+		toolBar.setFloatable(false);
 		
 		toolBar_1 = new JToolBar();
 		toolBar_1.setFloatable(false);
@@ -246,4 +286,5 @@ public class GUIImpl extends GUI {
 		});
 		
 	}
+
 }
