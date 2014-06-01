@@ -9,12 +9,6 @@ import MainSys.MainSys.Robot;
 
 public interface IRobotEnvironement {
 //perception
-	/*public Box[] findForBoxes(Robot r);
-	public Obstacle[] findForObstacles(Robot r);
-	
-	public Robot[] findForRobots(Robot r);
-	public Robot[] findForRobotsWithBox(Robot r);*/
-	
 	public Map<Position, Object> getPerception(Robot r, int x, int y);
 	
 // action

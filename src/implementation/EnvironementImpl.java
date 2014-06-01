@@ -49,7 +49,6 @@ public class EnvironementImpl extends Environement {
 				obstacleMap.put(new Obstacle(), new Position(i, j));
 			}
 		}
-		//TODO robot list param
 	}
 	
 	private void randomCorridor() {

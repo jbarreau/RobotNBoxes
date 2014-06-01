@@ -5,6 +5,5 @@ namespace Environement{
 	component Environement{
 		provides gui : IGUIEnvironement
 		provides gameManager : IEnvManager
-		
 	}
 }  
