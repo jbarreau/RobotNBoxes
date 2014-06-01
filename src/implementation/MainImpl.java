@@ -1,7 +1,6 @@
 package implementation;
 
 import implementation.gui.GUIImpl;
-import interfaces.IMain;
 import Environement.Environement;
 import MainSys.GUI;
 import MainSys.GameManager;
@@ -10,35 +9,33 @@ import MainSys.MainSys;
 
 
 public class MainImpl extends MainSys{
-
-	@Override
-	protected IMain make_main() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	private GUI gui ;
+	private GameManager gameManager ;
+	private Environement environement ;
 	@Override
 	protected Environement make_environement() {
-		// TODO Auto-generated method stub
-		return null;
+		environement = new EnvironementImpl();
+		return environement;
 	}
 
 	@Override
 	protected GUI make_gui() {
-		GUI gui = new GUIImpl();
-		return null;
+		gui = new GUIImpl();
+		return gui;
 	}
 
 	@Override
 	protected GameManager make_gameManager() {
-		// TODO Auto-generated method stub
-		return null;
+		gameManager = new GameManagerImpl();
+		return gameManager;
 	}
 
 	@Override
 	protected Robot make_Robot() {
-		// TODO Auto-generated method stub
-		return null;
+		MainSys.Robot robot = new MainSys.Robot(){
+			
+		};
+		return robot;
 	}
 
 }

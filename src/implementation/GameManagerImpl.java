@@ -1,5 +1,7 @@
 package implementation;
 
+import java.io.Serializable;
+
 import interfaces.IGUIManager;
 import interfaces.IRunner;
 import MainSys.GameManager;
@@ -7,7 +9,7 @@ import MainSys.GameManager;
 public class GameManagerImpl extends GameManager {
 	private boolean paused = false;
 	private boolean stop = false;
-	private int speed = 1;
+	private double speed = 1;
 	@Override
 	protected IGUIManager make_gui() {
 		// TODO Auto-generated method stub
@@ -31,8 +33,24 @@ public class GameManagerImpl extends GameManager {
 			}
 
 			@Override
-			public void speed(int s) {
+			public void speed(double s) {
 				speed = s;
+			}
+
+			@Override
+			public void changeCorridor() {
+				requires().environement().changeCorridor();
+			}
+
+			@Override
+			public Serializable saveState() {
+				Serializable state = requires().environement().SerializeSystem();
+				return state;
+			}
+
+			@Override
+			public void loadState(Serializable state) {
+				requires().environement().unserializeSystem(state);
 			}
 		};
 	}
@@ -44,14 +62,21 @@ public class GameManagerImpl extends GameManager {
 			
 			@Override
 			public void play() {
-				while (!paused || !stop)
-					try {
-						Thread.sleep(1000 / speed);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				try {
+					while(true){
+						while ( !stop){
+							while (!paused){
+								Thread.sleep((long) (1000 / speed));
+								provides().runner().play(); // I thing that doesn't work								
+							}
+							Thread.sleep(100 );
+						}
+						Thread.sleep(100 );
 					}
-				
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 	}

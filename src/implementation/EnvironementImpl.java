@@ -1,9 +1,11 @@
 package implementation;
 
+import interfaces.IEnvManager;
 import interfaces.IGUIEnvironement;
 import interfaces.IRobotEnvironement;
 import interfaces.MapObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -16,19 +18,84 @@ import Robot.Robot;
 
 public class EnvironementImpl extends Environement {
 	
+	int boxesUp = 0;
+	int boxesDown = 0;
 	Map<Robot, Position> robotMap = new HashMap<Robot, Position>();
 	Map<Box, Position> boxMap = new HashMap<Box, Position>();
 	Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
+	private Random r = new Random( Map.class.hashCode() );
 
+	private int robot_id = 1;
+	
+	public EnvironementImpl(){
+		for (int i = 25 ; i < 55 ; i++){
+			for (int j = 1 ; j < 29 ; j++){
+				obstacleMap.put(new Obstacle(), new Position(i, j));
+			}
+		}
+	}
+	
+	private void randomCorridor() {
+		obstacleMap.clear();
+		int newYCorr_1 = r.nextInt(30);
+		r.nextInt(30);r.nextInt(30);
+		int newYCorr_2 = r.nextInt(30); 
+		
+		for (int i = 25 ; i < 55 ; i++){
+			for (int j = 0 ; j < 30 ; j++){
+				if (j != newYCorr_1 && j != newYCorr_2){
+					obstacleMap.put(new Obstacle(), new Position(i, j));
+				}
+			}
+		}
+	}
+	
+	private int getNewRobotId(){
+		robot_id ++;
+		return robot_id-1;
+	}
+	
+	private Robot getRobotKey(Map<Robot, Position> map, Position p) {
+		Robot key = null;
+		for(Robot mapKey : map.keySet()) {
+			if(map.get(mapKey).equals(p)) {
+				key =  mapKey;
+				break;
+			}
+		}
+		return key;
+	}
+	
+	private Box getBoxKey(Map<Box, Position> map, Position p) {
+		Box key = null;
+		for(Box mapKey : map.keySet()) {
+			if(map.get(mapKey).equals(p)) {
+				key =  mapKey;
+				break;
+			}
+		}
+		return key;
+	}
+	
+	private Obstacle getObstacleKey(Map<Obstacle, Position> map, Position p) {
+		Obstacle key = null;
+		for(Obstacle mapKey : map.keySet()) {
+			if(map.get(mapKey).equals(p)) {
+				key =  mapKey;
+				break;
+			}
+		}
+		return key;
+	}
+	
 	@Override
 	protected IGUIEnvironement make_gui() {
 		// TODO Auto-generated method stub
 		return new IGUIEnvironement() {
 			
-			@Override
+			/*@Override
 			public Map<Position, MapObject> update() {
-				 Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
-
+				Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
 				 //None
 				 for (int i = 0 ; i< 80; i++){
 					 for (int j = 0 ; j < 30 ;  j++){
@@ -37,30 +104,80 @@ public class EnvironementImpl extends Environement {
 				 }
 				 //box
 				 for (int i = 0 ; i< 10 ; i++){
-					 for (int j = 5 ; j < 20 ;  j++){
-						 	System.out.println("Box : " + i +" "+ j);
+					 for (int j = 5 ; j < 25 ;  j++){
 						 	ret.put(new Position(i, j ), MapObject.Box);
 					 }
 				 }
-				 //obstacles
-				 for (int i = 25 ; i< 53 ; i++){
-					 for (int j = 1 ; j < 29 ;  j++){
-						 	System.out.println("obstacles : " + i +" "+ j);
-						 	ret.put(new Position(i, j ), MapObject.Obstacle);
-					 }
+				 //Obstacles
+				 for (Position p : corridors.keySet()){
+					 ret.put(p, MapObject.Obstacle);
 				 }
 				 //robots
-				 Random r = new Random();
-				 r.setSeed(r.nextInt());;
 			 	 int nbR = 0;
-				 while(nbR < 80){
+				 while(nbR < 160){
 					 	int rI = r.nextInt(15)+10;
 					 	int rJ = r.nextInt(30);
-						 System.out.println("robot : " + rI +" "+ rJ);
-					 	ret.put(new Position(rI, rJ ), MapObject.RobotEmpty);
+					 	ret.put(new Position(rI, rJ, getNewRobotId() ), MapObject.RobotEmpty);
 					 	nbR ++;
 				 }
+				 //Full Robots
+				 r.setSeed(r.nextInt());
+			 	 int nbRF = 0;
+				 while(nbRF < 160){
+					 	int rI = r.nextInt(15)+(80-10-15);
+					 	int rJ = r.nextInt(30);
+					 	ret.put(new Position(rI, rJ, getNewRobotId() ), MapObject.RobotFull);
+					 	nbRF ++;
+				 }
 				 return ret;
+			}*/
+
+			@Override
+			public String getLog(int robotId) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Map<Robot, MapObject> getRobots() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Map<Box, MapObject> getBoxes() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Map<Obstacle, MapObject> getObstacles() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+	}
+	@Override
+	protected IEnvManager make_gameManager() {
+		// TODO Auto-generated method stub
+		return  new IEnvManager() {
+			
+			@Override
+			public void changeCorridor() {
+				randomCorridor();
+			}
+
+			@Override
+			public Serializable SerializeSystem() {
+				// TODO Auto-generated method stub
+				return new Serializable() {
+				};
+			}
+
+			@Override
+			public void unserializeSystem(Serializable save) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 	}
@@ -72,12 +189,13 @@ public class EnvironementImpl extends Environement {
 			public void robotTakeBox(Robot r, Box b, int x, int y) {
 				Position p = new Position(x, y);
 				boxMap.remove(b);
+				boxesUp++;
 			}
 			
 			@Override
 			public void robotPutBox(Robot r, Box b, int x, int y) {
 				Position p = new Position(x, y);
-				boxMap.put(b, p);
+				boxesDown++;
 			}
 			
 			@Override
@@ -87,10 +205,8 @@ public class EnvironementImpl extends Environement {
 			}
 			
 			@Override
-			public void robotKillHimself(Robot r, int x, int y) {
-				Position p = new Position(x, y);
+			public void robotKillHimself(Robot r) {
 				robotMap.remove(r);
-				
 			}
 			
 			@Override
@@ -98,30 +214,30 @@ public class EnvironementImpl extends Environement {
 				Position p = new Position(x, y);
 				robotMap.put(r, p);
 			}
-			
-			@Override
-			public Robot[] findForRobotsWithBox(Robot r) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Robot[] findForRobots(Robot r) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Box[] findForBoxes(Robot r) {
-				// TODO Auto-generated method stub
-				return null;
-			}
 
 			@Override
-			public Obstacle[] findForObstacles(Robot r) {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Position, Object> getPerception(Robot r, int x, int y) {
+				Map<Position, Object> perceptionMap = new HashMap<Position, Object>();
+				for (int i = x-3 ; i < x+3 ; i++) {
+					for (int j = y-3 ; j < y+3 ; j++) {
+						Position p = new Position(i, j);
+						if(robotMap.containsValue(p)) {
+							perceptionMap.put(p, getRobotKey(robotMap, p));
+						}
+						else if(boxMap.containsValue(p)) {
+							perceptionMap.put(p, getBoxKey(boxMap, p));
+						}
+						else if(obstacleMap.containsValue(p)) {
+							perceptionMap.put(p, getObstacleKey(obstacleMap, p));
+						}
+						else {
+							perceptionMap.put(p, null);
+						}
+					}
+				}
+				return perceptionMap;
 			}
+			
 		};
 	}
 
