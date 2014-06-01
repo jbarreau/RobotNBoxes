@@ -1,5 +1,5 @@
 package interfaces;
 
 public interface IMain {
-	public void launchGUI();
+	public void createRobot();
 }

@@ -1,6 +1,8 @@
 package interfaces;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable{
 	private int x;
 	private int y;
 	private int id= -1;
@@ -8,6 +10,7 @@ public class Position {
 	public Position(int Px, int Py){
 		x = Px;
 		y = Py;
+		id = -1;
 	}
 	
 	public Position(int Px, int Py, int Pid){

@@ -6,18 +6,23 @@ import interfaces.MapObject;
 import interfaces.Position;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import Environement.Environement;
+import MainSys.MainSys.Robot;
 
 public class EnvironementImpl extends Environement{
 	private int robot_id = 1;
 	private Random r = new Random( Map.class.hashCode() );
 	private Map<Position, MapObject> corridors = new HashMap<Position, MapObject>();
+	private List<Robot> robots;
 	
-	public EnvironementImpl(){
+	public EnvironementImpl(List<Robot> Probots){
+		robots = Probots;
 		for (int i = 25 ; i < 55 ; i++){
 			for (int j = 1 ; j < 29 ; j++){
 				corridors.put(new Position(i, j), MapObject.Obstacle);
@@ -107,14 +112,20 @@ public class EnvironementImpl extends Environement{
 
 			@Override
 			public Serializable SerializeSystem() {
-				// TODO Auto-generated method stub
-				return new Serializable() {
-				};
+				List<Serializable> ret = new ArrayList<Serializable>();
+				ret.add(new Position(0, 0));
+				ret.add(new Position(1, 1));
+				ret.add(new Position(2, 2));
+				ret.add(new Position(3, 3));
+				return (Serializable)ret;
 			}
 
 			@Override
 			public void unserializeSystem(Serializable save) {
-				// TODO Auto-generated method stub
+				List<Position> out = (List<Position>) save;
+				for (Position p : out){
+					System.out.println("p : "+p.getX()+","+p.getY()+" : "+p.getId());
+				}
 				
 			}
 		};

@@ -2,6 +2,7 @@ package implementation;
 
 import java.io.Serializable;
 
+import sun.font.EAttribute;
 import interfaces.IGUIManager;
 import interfaces.IRunner;
 import MainSys.GameManager;
@@ -78,6 +79,7 @@ public class GameManagerImpl extends GameManager {
 					e.printStackTrace();
 				}
 			}
+
 		};
 	}
 

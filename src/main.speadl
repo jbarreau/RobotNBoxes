@@ -1,9 +1,9 @@
 import Environement.Environement
+import interfaces.IEnvManager
 import interfaces.IGUIEnvironement
 import interfaces.IGUIManager
-import interfaces.IMain
 import interfaces.IRunner
-import interfaces.IEnvManager
+import interfaces.IMain
 
 namespace MainSys{   
 	component GUI{
@@ -13,15 +13,17 @@ namespace MainSys{
 	
 	component GameManager{
 		provides gui : IGUIManager
-		provides runner : IRunner
 		requires environement : IEnvManager
 		//requires runner : IRunner
+		provides runner : IRunner
+		requires main : IMain
 	}
 	
+	
 	ecosystem MainSys{
-		
-		species Robot{ 
-			
+		provides main : IMain
+		species Robot(id : int, desc : String){
+			provides runner : IRunner
 		}
 		
 		part environement : Environement{ 
@@ -35,6 +37,8 @@ namespace MainSys{
 		
 		part gameManager : GameManager{
 			bind environement to environement.gameManager 
+			//bind runner to  
+			bind main to main
 		}
 			
 	}

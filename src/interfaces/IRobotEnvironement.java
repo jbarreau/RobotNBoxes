@@ -1,8 +1,8 @@
 package interfaces;
 
-import javax.swing.Box;
 
-import Robot.Robot;
+import MainSys.MainSys.Robot;
+
 
 public interface IRobotEnvironement {
 //perception
