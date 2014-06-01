@@ -1,16 +1,24 @@
 package implementation;
 
 import interfaces.IGUIEnvironement;
+import interfaces.IRobotEnvironement;
 import interfaces.MapObject;
-import interfaces.Position;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import objet.Box;
+import objet.Obstacle;
+import objet.Position;
 import Environement.Environement;
+import Robot.Robot;
 
-public class EnvironementImpl extends Environement{
+public class EnvironementImpl extends Environement {
+	
+	Map<Robot, Position> robotMap = new HashMap<Robot, Position>();
+	Map<Box, Position> boxMap = new HashMap<Box, Position>();
+	Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
 
 	@Override
 	protected IGUIEnvironement make_gui() {
@@ -53,6 +61,66 @@ public class EnvironementImpl extends Environement{
 					 	nbR ++;
 				 }
 				 return ret;
+			}
+		};
+	}
+	
+	protected IRobotEnvironement make_robotEnvironement() {
+		return new IRobotEnvironement() {
+			
+			@Override
+			public void robotTakeBox(Robot r, Box b, int x, int y) {
+				Position p = new Position(x, y);
+				boxMap.remove(b);
+			}
+			
+			@Override
+			public void robotPutBox(Robot r, Box b, int x, int y) {
+				Position p = new Position(x, y);
+				boxMap.put(b, p);
+			}
+			
+			@Override
+			public void robotMoved(Robot r, int x, int y) {
+				Position p = new Position(x, y);
+				robotMap.put(r, p);
+			}
+			
+			@Override
+			public void robotKillHimself(Robot r, int x, int y) {
+				Position p = new Position(x, y);
+				robotMap.remove(r);
+				
+			}
+			
+			@Override
+			public void robotCreated(Robot r, int x, int y) {
+				Position p = new Position(x, y);
+				robotMap.put(r, p);
+			}
+			
+			@Override
+			public Robot[] findForRobotsWithBox(Robot r) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Robot[] findForRobots(Robot r) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Box[] findForBoxes(Robot r) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Obstacle[] findForObstacles(Robot r) {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

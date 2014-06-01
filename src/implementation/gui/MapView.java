@@ -1,7 +1,6 @@
 package implementation.gui;
 
 import interfaces.MapObject;
-import interfaces.Position;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,6 +12,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import objet.Position;
 import MainSys.GUI;
 
 
