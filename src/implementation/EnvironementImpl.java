@@ -3,8 +3,6 @@ package implementation;
 import interfaces.IEnvManager;
 import interfaces.IGUIEnvironement;
 import interfaces.IRobotEnvironement;
-import interfaces.MapObject;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +22,6 @@ public class EnvironementImpl extends Environement {
 	Map<Box, Position> boxMap = new HashMap<Box, Position>();
 	Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
 	private Random r = new Random( Map.class.hashCode() );
-
-	private int robot_id = 1;
 	
 	public EnvironementImpl(){
 		for (int i = 25 ; i < 55 ; i++){
@@ -48,11 +44,6 @@ public class EnvironementImpl extends Environement {
 				}
 			}
 		}
-	}
-	
-	private int getNewRobotId(){
-		robot_id ++;
-		return robot_id-1;
 	}
 	
 	private Robot getRobotKey(Map<Robot, Position> map, Position p) {
@@ -92,68 +83,20 @@ public class EnvironementImpl extends Environement {
 	protected IGUIEnvironement make_gui() {
 		// TODO Auto-generated method stub
 		return new IGUIEnvironement() {
-			
-			/*@Override
-			public Map<Position, MapObject> update() {
-				Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
-				 //None
-				 for (int i = 0 ; i< 80; i++){
-					 for (int j = 0 ; j < 30 ;  j++){
-						 	ret.put(new Position(i ,j), MapObject.None);
-					 }
-				 }
-				 //box
-				 for (int i = 0 ; i< 10 ; i++){
-					 for (int j = 5 ; j < 25 ;  j++){
-						 	ret.put(new Position(i, j ), MapObject.Box);
-					 }
-				 }
-				 //Obstacles
-				 for (Position p : corridors.keySet()){
-					 ret.put(p, MapObject.Obstacle);
-				 }
-				 //robots
-			 	 int nbR = 0;
-				 while(nbR < 160){
-					 	int rI = r.nextInt(15)+10;
-					 	int rJ = r.nextInt(30);
-					 	ret.put(new Position(rI, rJ, getNewRobotId() ), MapObject.RobotEmpty);
-					 	nbR ++;
-				 }
-				 //Full Robots
-				 r.setSeed(r.nextInt());
-			 	 int nbRF = 0;
-				 while(nbRF < 160){
-					 	int rI = r.nextInt(15)+(80-10-15);
-					 	int rJ = r.nextInt(30);
-					 	ret.put(new Position(rI, rJ, getNewRobotId() ), MapObject.RobotFull);
-					 	nbRF ++;
-				 }
-				 return ret;
-			}*/
 
 			@Override
-			public String getLog(int robotId) {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Robot, Position> getRobots() {
+				return robotMap;
 			}
 
 			@Override
-			public Map<Robot, MapObject> getRobots() {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Box, Position> getBoxes() {
+				return boxMap;
 			}
 
 			@Override
-			public Map<Box, MapObject> getBoxes() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public Map<Obstacle, MapObject> getObstacles() {
-				// TODO Auto-generated method stub
-				return null;
+			public Map<Obstacle, Position> getObstacles() {
+				return obstacleMap;
 			}
 		};
 	}

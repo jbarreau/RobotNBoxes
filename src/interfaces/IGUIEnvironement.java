@@ -4,12 +4,11 @@ import java.util.Map;
 
 import objet.Box;
 import objet.Obstacle;
+import objet.Position;
 import Robot.Robot;
 
 public interface IGUIEnvironement {
-	public Map<Robot, MapObject> getRobots();
-	public Map<Box, MapObject> getBoxes();
-	public Map<Obstacle, MapObject> getObstacles();
-	public String getLog(int robotId);
-
+	public Map<Robot, Position> getRobots();
+	public Map<Box, Position> getBoxes();
+	public Map<Obstacle, Position> getObstacles();
 }
