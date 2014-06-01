@@ -25,9 +25,27 @@ public class EnvironementImpl extends Environement {
 	Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
 	private Random r = new Random( Map.class.hashCode() );
 	
-	public EnvironementImpl(List<Robot> Probots){
+	public EnvironementImpl(List<Robot> robots) {
+		// Robots
+		Random r = new Random();
+		r.setSeed(r.nextInt());
+		for(Robot robot : robots){
+			int rI = r.nextInt(15)+10;
+			int rJ = r.nextInt(30);
+			System.out.println("Robot : " + rI +" "+ rJ);
+			robotMap.put(robot, new Position(rI, rJ ));
+		}
+		//box
+		for (int i = 0 ; i< 10 ; i++){
+			for (int j = 5 ; j < 20 ; j++){
+				System.out.println("Box : " + i +" "+ j);
+				boxMap.put(new Box(), new Position(i, j ));
+			}
+		}
+		// Obstacles
 		for (int i = 25 ; i < 55 ; i++){
 			for (int j = 1 ; j < 29 ; j++){
+				System.out.println("Obstacle : " + i +" "+ j);
 				obstacleMap.put(new Obstacle(), new Position(i, j));
 			}
 		}
