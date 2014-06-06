@@ -5,7 +5,6 @@ import java.util.Map;
 import objet.Box;
 import objet.Obstacle;
 import objet.Position;
-import MainSys.EcoRobot.Robot;
 
 public interface IGUIEnvironement {
 	public Map<Robot, Position> getRobots();

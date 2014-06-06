@@ -2,3 +2,6 @@ bin/
 speadl-gen/
 .classpath
 .project
+.idea/
+.settings/
+RobotNBoxes_java.iml
