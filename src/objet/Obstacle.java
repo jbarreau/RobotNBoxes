@@ -1,5 +1,7 @@
 package objet;
 
-public class Obstacle {
+import java.io.Serializable;
+
+public class Obstacle implements Serializable {
 
 }

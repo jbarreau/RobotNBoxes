@@ -1,10 +1,11 @@
 package interfaces;
 
-import objet.Box;
-import objet.Position;
+import implementation.robot.Robot;
 
 import java.util.List;
 
 public interface IEnvironement {
     public List<Robot> getRobots();
+
+    public Robot createRobot();
 }

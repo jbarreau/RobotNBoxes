@@ -1,5 +1,5 @@
 package implementation;
-
+/*
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +9,9 @@ import MainSys.Environement;
 import MainSys.GUI;
 import MainSys.GameManager;
 import MainSys.MainSys;
-
+import implementation.environement.Environement;
+import implementation.gameManager.GameManager;
+import implementation.robot.Robot;
 
 
 public class MainImpl extends MainSys{
@@ -33,8 +35,8 @@ public class MainImpl extends MainSys{
 	@Override
 	protected void start() {
 		super.start();
-		requiringCompSpecies = new RequiringCompSpeciesImpl();
 		newRequiringCompSpecies();
+		requiringCompSpecies = new RequiringCompSpeciesImpl();
 	}
 
 
@@ -52,3 +54,4 @@ public class MainImpl extends MainSys{
 	}
 
 }
+*/

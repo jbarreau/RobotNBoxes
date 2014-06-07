@@ -1,9 +1,6 @@
 package implementation;
 
-import interfaces.IEnvManager;
-import interfaces.IGUIEnvironement;
-import interfaces.IRobotEnvironement;
-
+/*
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,22 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import objet.Box;
+import objet.getBox;
 import objet.Obstacle;
 import objet.Position;
 import MainSys.EcoRobot.Robot;
 import MainSys.Environement;
 
-public class EnvironementImpl extends Environement {
-	
+public class EnvironementImpl /*extends Environement *//*{
+
 	int boxesUp = 0;
 	int boxesDown = 0;
 	Map<Robot, Position> robotMap = new HashMap<Robot, Position>();
-	Map<Box, Position> boxMap = new HashMap<Box, Position>();
+	Map<getBox, Position> boxMap = new HashMap<getBox, Position>();
 	Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
 	private Random r = new Random( Map.class.hashCode() );
 	
 	public EnvironementImpl(List<Robot> robots) {
+		System.out.println("environement created " + robots.size());
 		// Robots
 		Random r = new Random();
 		r.setSeed(r.nextInt());
@@ -38,7 +36,7 @@ public class EnvironementImpl extends Environement {
 		//box
 		for (int i = 0 ; i< 10 ; i++){
 			for (int j = 5 ; j < 25 ; j++){
-				boxMap.put(new Box(), new Position(i, j ));
+				boxMap.put(new getBox(), new Position(i, j ));
 			}
 		}
 		// Obstacles
@@ -75,9 +73,9 @@ public class EnvironementImpl extends Environement {
 		return key;
 	}
 	
-	private Box getBoxKey(Map<Box, Position> map, Position p) {
-		Box key = null;
-		for(Box mapKey : map.keySet()) {
+	private getBox getBoxKey(Map<getBox, Position> map, Position p) {
+		getBox key = null;
+		for(getBox mapKey : map.keySet()) {
 			if(map.get(mapKey).equals(p)) {
 				key =  mapKey;
 				break;
@@ -108,7 +106,7 @@ public class EnvironementImpl extends Environement {
 			}
 
 			@Override
-			public Map<Box, Position> getBoxes() {
+			public Map<getBox, Position> getBoxes() {
 				return boxMap;
 			}
 
@@ -155,14 +153,14 @@ public class EnvironementImpl extends Environement {
 		return new IRobotEnvironement() {
 			
 			@Override
-			public void robotTakeBox(Robot r, Box b, int x, int y) {
+			public void robotTakeBox(Robot r, getBox b, int x, int y) {
 				Position p = new Position(x, y);
 				boxMap.remove(b);
 				boxesUp++;
 			}
 			
 			@Override
-			public void robotPutBox(Robot r, Box b, int x, int y) {
+			public void robotPutBox(Robot r, getBox b, int x, int y) {
 				Position p = new Position(x, y);
 				boxesDown++;
 			}
@@ -210,3 +208,4 @@ public class EnvironementImpl extends Environement {
 	}
 
 }
+*/

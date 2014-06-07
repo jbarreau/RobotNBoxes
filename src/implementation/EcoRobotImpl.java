@@ -1,14 +1,15 @@
 package implementation;
-
+/*
 import java.awt.Robot;
 
-import interfaces.IConnaissance;
-import interfaces.IRunner;
+import implementation.robot.RobotImpl;
 import MainSys.EcoRobot;
 
 public class EcoRobotImpl extends EcoRobot {
 
-
+	public EcoRobotImpl(){
+		
+	}
 	@Override
 	protected Robot make_Robot() {
 		int k = RequiringCompSpeciesImpl.getNewRobotId();
@@ -34,7 +35,8 @@ public class EcoRobotImpl extends EcoRobot {
 				return new IConnaissance() {
 				};
 			}
-		};*/
-	}
+		};*//*
+    }
 
 }
+*/

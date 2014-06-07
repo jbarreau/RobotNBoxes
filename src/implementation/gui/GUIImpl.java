@@ -1,90 +1,94 @@
 package implementation.gui;
 
 
+import implementation.environement.Environement;
+import implementation.gameManager.GameManager;
+import implementation.robot.Robot;
 import interfaces.MapObject;
-
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
-import javax.swing.JToolBar;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import objet.Box;
 import objet.Obstacle;
 import objet.Position;
-import MainSys.EcoRobot.Robot;
-import MainSys.GUI;
- 
-public class GUIImpl extends GUI {
 
-	private JFrame frmSmaalViewer;
-	private JToolBar toolBar;
-	private JButton JBPause;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class GUIImpl implements GUI {
+    private GameManager gameManager;
+
+    private JFrame frmSmaalViewer;
+    private JToolBar toolBar;
+    private JButton JBPause;
 	private JButton JBStop;
-	private JButton JBPlay;
-	private JButton JBChange;
-	private JSlider JBSpeed;
-	private JLabel lblCurrentSpeed;
+    private JButton JBPlay;
+    private JButton JBAddRobot;
+    private JButton JBChange;
+    private JSlider JBSpeed;
+    private JLabel lblCurrentSpeed;
 	private JLabel labelPlus;
 	private JLabel labelMoin;
 	private JButton load;
 	private JButton save;
 	private JToolBar toolBar_1;
 	private MapView mapView;
-	
-	/**
-	 * Launch the application.
-	 */
-	public void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUIImpl window = new GUIImpl();
-					window.frmSmaalViewer.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
+    /**
+     * Create the application.
+     */
+    public GUIImpl() {
+        initialize();
+        frmSmaalViewer.setVisible(true);
+    }
+
+    public GUIImpl(GameManager gm) {
+        gameManager = gm;
+        initialize();
+        frmSmaalViewer.setVisible(true);
+    }
+
+    /**
+     * Launch the application.
+     */
+    public void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    GUIImpl window = new GUIImpl();
+                    window.frmSmaalViewer.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 
-	public Map<Position, MapObject> update() {
-		Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
-		Map<Robot,Position> robots = getRobots();
+    public Map<Position, MapObject> update() {
+        Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
 		Map<Box,Position> boxes = getBoxes();
-		Map<Obstacle,Position> obstacles = getObstacles();
+        Map<Robot, Position> robots = getRobots();
+        Map<Obstacle, Position> obstacles = getObstacles();
 
-		for (Robot r : robots.keySet()){
-			//if (r.)
+        for (Robot r : robots.keySet()) {
+            //if (r.)
 			if (robots.get(r) == null){
 				System.out.println("null pos for robot");
 			}
-			ret.put(robots.get(r), MapObject.RobotEmpty);
-			//if (requires().robot().)
-		}
-		for (Box b : boxes.keySet()){
-			if (boxes.get(b) == null){
+            if (r.getBox() == null) {
+                ret.put(robots.get(r), MapObject.RobotEmpty);
+            } else {
+                ret.put(robots.get(r), MapObject.RobotFull);
+            }
+        }
+        for (Box b : boxes.keySet()) {
+            if (boxes.get(b) == null){
 				System.out.println("null pos for box");
 			}
 			ret.put(boxes.get(b), MapObject.Box);
@@ -99,28 +103,29 @@ public class GUIImpl extends GUI {
 		return ret;
 	}
 	public Map<Robot,Position> getRobots(){
-		return requires().environnement().getRobots();
-	}
-	public Map<Box,Position> getBoxes(){
-		return requires().environnement().getBoxes();
-	}	
-	public Map<Obstacle,Position> getObstacles(){
-		return requires().environnement().getObstacles();
-	}
-	
-	/**
-	 * Create the application.
-	 */
-	public GUIImpl() {
-		initialize();
-		frmSmaalViewer.setVisible(true);
-	}
+        List<implementation.robot.Robot> robots = Environement.getInstance().getRobots();
+        Map<implementation.robot.Robot, Position> tmp = new HashMap<Robot, Position>();
+        for (implementation.robot.Robot r : robots) {
+            tmp.put(r, r.getPosition());
+        }
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmSmaalViewer = new JFrame();
+        return tmp;
+    }
+
+    public Map<Box, Position> getBoxes() {
+        return Environement.getInstance().getBoxes();
+    }
+
+    public Map<Obstacle, Position> getObstacles() {
+        return Environement.getInstance().getObstacles();
+    }
+
+
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+        frmSmaalViewer = new JFrame();
 		frmSmaalViewer.setTitle("SMA-AL Viewer");
 		frmSmaalViewer.setBounds(100, 100, 550, 385);
 		frmSmaalViewer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,28 +151,36 @@ public class GUIImpl extends GUI {
 		JBPause.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				requires().gameManager().pause();
-			}
-		});
-		JBPlay = new JButton("play");
+                gameManager.pause();
+            }
+        });
+        JBPlay = new JButton("play");
 		JBPlay.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				requires().gameManager().play();
-			}
-		});
-		JBStop = new JButton("stop");
+                gameManager.play();
+            }
+        });
+        JBStop = new JButton("stop");
 		JBStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				requires().gameManager().stop();
-			}
-		});
-		toolBar.add(JBPause);
-		toolBar.add(JBPlay);
-		toolBar.add(JBStop);
-		
-		JBSpeed = new JSlider();
+                gameManager.stop();
+            }
+        });
+        JBAddRobot = new JButton("add robot");
+        JBAddRobot.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Environement.getInstance().createRobot();
+            }
+        });
+        toolBar.add(JBPause);
+        toolBar.add(JBAddRobot);
+        toolBar.add(JBPlay);
+        toolBar.add(JBStop);
+
+        JBSpeed = new JSlider();
 		JBSpeed.setMinimumSize(new Dimension(50, 26));
 		JBSpeed.setValue(1);
 		JBSpeed.setMaximumSize(new Dimension(100, 20));
@@ -178,13 +191,13 @@ public class GUIImpl extends GUI {
 				int value = JBSpeed.getValue();
 				if (value == 0 ){
 					lblCurrentSpeed.setText("current speed : 0,5");
-					requires().gameManager().speed(0.5);
-				}else{
-					lblCurrentSpeed.setText("current speed : "+JBSpeed.getValue()+",0");
-					requires().gameManager().speed(JBSpeed.getValue());
-				}
-			}
-		});
+                    gameManager.speed(0.5);
+                } else {
+                    lblCurrentSpeed.setText("current speed : " + JBSpeed.getValue() + ",0");
+                    gameManager.speed(JBSpeed.getValue());
+                }
+            }
+        });
 		
 		JSeparator separator = new JSeparator();
 		toolBar.add(separator);
@@ -228,10 +241,10 @@ public class GUIImpl extends GUI {
 		JBChange.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				requires().gameManager().changeCorridor();
-			}
-		});
-		load.addActionListener(new ActionListener() {
+                gameManager.changeCorridor();
+            }
+        });
+        load.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser();
@@ -246,10 +259,9 @@ public class GUIImpl extends GUI {
 						Serializable state =  (Serializable) in.readObject();
 						in.close();
 						fileIn.close();
-						requires().gameManager().loadState(state);
-					}catch(IOException i)
-					{
-					     i.printStackTrace();
+                        gameManager.loadState(state);
+                    } catch (IOException i) {
+                        i.printStackTrace();
 					     return;
 					}catch(ClassNotFoundException c)
 					{
@@ -271,10 +283,10 @@ public class GUIImpl extends GUI {
 
 					ObjectOutputStream out;
 					try {
-						Serializable state = requires().gameManager().saveState();
-						FileOutputStream fileOut = new FileOutputStream(path);
-						out = new ObjectOutputStream(fileOut);
-						out.writeObject(state);
+                        Serializable state = gameManager.saveState();
+                        FileOutputStream fileOut = new FileOutputStream(path);
+                        out = new ObjectOutputStream(fileOut);
+                        out.writeObject(state);
 						out.close();
 						fileOut.close();
 					} catch (IOException e) {

@@ -1,16 +1,12 @@
 package implementation.gui;
 
 import interfaces.MapObject;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.Map;
-
-import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-
 import objet.Position;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.util.Map;
 
 
 public class MapView extends JPanel {
@@ -186,6 +182,6 @@ public class MapView extends JPanel {
 		Rectangle map = new Rectangle(x+1, y+1, width-2, height-2);	
 
 		paintZones(g, map);
-		//paintDatas(g, map);
-	}
+        paintDatas(g, map);
+    }
 }

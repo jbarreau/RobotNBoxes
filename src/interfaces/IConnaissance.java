@@ -1,10 +1,12 @@
 package interfaces;
 
-import objet.Position;
 import objet.Box;
+import objet.Position;
 
 public interface IConnaissance {
     public String getLog();
+
     public Position getPosition();
-    public Box Box(); //return null if no Box
+
+    public Box getBox(); //return null if no getBox
 }
