@@ -165,21 +165,21 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
     @Override
     public void robotTakeBox(Robot robot, Box b) {
-
+    	boxMap.remove(b);
     }
 
     @Override
     public void robotPutBox(Robot robot, Box b) {
-
+    	
     }
 
     @Override
     public void robotKillHimself(Robot robot) {
-
+    	robotMap.remove(robot);
     }
 
     @Override
     public void robotCreated(Robot robot) {
-
+    	robotMap.put(robot, robot.getPosition());
     }
 }
