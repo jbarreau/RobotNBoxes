@@ -14,6 +14,7 @@ import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 public class RobotImpl extends Robot {
     private enum State{ haveBox, noHaveBox};
+    private enum Direction{ bofore,behind,left,right, unknown};
     
 	
 	private Environement environement;
@@ -23,9 +24,20 @@ public class RobotImpl extends Robot {
     private int id;
     private StringBuilder log;
     private State state;
+    private Direction direction = Direction.unknown;
     private Map<Position, Object> localEnv;
     private int maxX = 79;
     private int maxY = 28;
+    
+    private int xzd1 = 71;
+    private int yzd1 = 5;
+    private int xzd2 = 80;
+    private int yzd2 = 25;
+    
+    private int xzr1 = 0;
+    private int yzr1 = 5;
+    private int xzr2 = 10;
+    private int yzr2 = 25;
 
     public RobotImpl(Position Pposition, Environement e, int Pid) {
         position = Pposition;
@@ -79,6 +91,10 @@ public class RobotImpl extends Robot {
         if(newPosition != null){
         	position = newPosition;
         }
+        else{
+        	System.out.println("robot meurt");
+         	environement.robotKillHimself(this);
+        }
  
         
         /*int t = r.nextInt(4);
@@ -103,12 +119,38 @@ public class RobotImpl extends Robot {
     }
     
     boolean dansDepZon(int x, int y){   	
-    	if((x >= 71 && x <= maxX) && (y >= 5 && y <= maxY) ){
+    	if((x >= xzd1 && x <= xzd2) && (y >= yzd1 && y <= yzd2) ){
     		return true;
     	}    	
     	return false; 
     }
     
+   /* private Position verifiePosition(Position newPosition)
+    {
+    	Object obj;
+    	newPosition = new Position (position.getX()-1, position.getY());
+		if( newPosition.getX() >= 0){
+			System.out.println("pass check devant");
+			obj = localEnv.get(newPosition);
+						
+			if(obj != null && obj instanceof  Box){
+				box = (Box)obj;
+				environement.robotTakeBox(this, box);
+				state = State.haveBox;
+				return (new Position(position.getX(), position.getY()));
+			}
+			
+			if(obj == null){	
+				if(direction == Direction.unknown || direction == Direction.bofore ){
+					direction = Direction.bofore;
+					System.out.println("Robot "+id+"avance devant");
+					return newPosition;
+				}
+				
+			}
+		}
+		
+    }*/
     private Position decider(){    	
     	
     	Position newPosition;
@@ -127,9 +169,10 @@ public class RobotImpl extends Robot {
 					return (new Position(position.getX(), position.getY()));
 				}
 				
-				if(obj == null){		
-					System.out.println("Robot "+id+"avance devant");
-					return newPosition;
+				if(obj == null){	
+					
+						System.out.println("Robot "+id+"avance devant");
+						return newPosition;
 				}
 			}
 	
@@ -145,9 +188,14 @@ public class RobotImpl extends Robot {
 				}
 				
 				if(localEnv.get(newPosition) == null ){
-	    			System.out.println("Robot "+id+"avance à gauche");
-	    			return newPosition;
+					if(direction == Direction.unknown || direction == Direction.left ){
+						direction = Direction.left;
+						System.out.println("Robot "+id+"avance à gauche");
+		    			return newPosition;
+					}
+	    			
 	    		}
+				direction = Direction.unknown;
 			}
 			
 			
@@ -162,9 +210,14 @@ public class RobotImpl extends Robot {
 					return (new Position(position.getX(), position.getY()));
 				}			
 				if( obj == null ){		
-	    			System.out.println("Robot "+id+"avance à droite");
-	    			return newPosition;
+					if(direction == Direction.unknown || direction == Direction.right ){
+						direction = Direction.right;
+						System.out.println("Robot "+id+"avance à droite");
+		    			return newPosition;
+					}
+	    			
 	    		}
+				direction = Direction.unknown;
 			}
 					
     		newPosition = new Position (position.getX()+1, position.getY());
@@ -178,8 +231,11 @@ public class RobotImpl extends Robot {
 				}
     			
     			if(localEnv.get(newPosition) == null){
-        			System.out.println("Robot "+id+"recule");
-        			return newPosition;
+    				
+    					System.out.println("Robot "+id+"recule");
+            			return newPosition;
+    				
+        			
         		}
     		}
     		
@@ -195,9 +251,12 @@ public class RobotImpl extends Robot {
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{
-					System.out.println("Robot "+id+"avance devant");
-					return newPosition;
-				}		
+					
+						System.out.println("Robot "+id+"avance devant");
+						return newPosition;
+					
+					
+				}
 			}
 			
 			newPosition = new Position (position.getX(), position.getY()+1);
@@ -209,9 +268,14 @@ public class RobotImpl extends Robot {
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{
-					System.out.println("Robot "+id+"avance à gauche");
-					return newPosition;
+					if(direction == Direction.unknown || direction == Direction.right ){
+						direction = Direction.right;
+						System.out.println("Robot "+id+"avance à gauche");
+						return newPosition;
+					}
+					
 				}	
+				direction = Direction.unknown;
     		}
 			newPosition = new Position (position.getX(), position.getY()-1);
     		if(localEnv.get(newPosition) == null && newPosition.getY() >= 0){	
@@ -222,10 +286,14 @@ public class RobotImpl extends Robot {
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{
-					System.out.println("Robot "+id+"avance à droite");
-	    			return newPosition;
+					if(direction == Direction.unknown || direction == Direction.left ){
+						direction = Direction.left;
+						System.out.println("Robot "+id+"avance à droite");
+		    			return newPosition;
+					}
+					
 				}	
-    					
+    			direction = Direction.unknown;		
     		}
     		newPosition = new Position (position.getX()-1, position.getY());
 			if(localEnv.get(newPosition) == null && newPosition.getX() >= 0){
@@ -234,14 +302,14 @@ public class RobotImpl extends Robot {
 					state = State.noHaveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
-				else{
-					System.out.println("Robot "+id+"avance devant");
-					return newPosition;
-				}				
+				else{					
+						System.out.println("Robot "+id+"avance derrière");
+						return newPosition;
+						
+				}	
 			}
 		}
-     	System.out.println("robot meurt");
-     	environement.robotKillHimself(this);
+     	
     	return null;
     }
 /*    public void play(){
