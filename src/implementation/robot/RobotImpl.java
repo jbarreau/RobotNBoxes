@@ -27,9 +27,9 @@ public class RobotImpl extends Robot {
     private int maxY = 28;
     
     private int xzd1 = 71;
-    private int yzd1 = 5;
+    private int yzd1 = 6;
     private int xzd2 = 80;
-    private int yzd2 = 25;
+    private int yzd2 = 24;
     
     private int xzr1 = 0;
     private int yzr1 = 5;
@@ -160,6 +160,7 @@ public class RobotImpl extends Robot {
 				if(obj != null && obj instanceof  Box){
 					box = (Box)obj;
 					environement.robotTakeBox(this, box);
+					appendLog("Robot "+id+" souléve unee box");
 					state = State.haveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
@@ -167,6 +168,7 @@ public class RobotImpl extends Robot {
 				if(obj == null){	
 					
 						System.out.println("Robot "+id+"avance devant");
+						appendLog("Robot "+id+"avance devant");
 						return newPosition;
 				}
 			}
@@ -178,6 +180,7 @@ public class RobotImpl extends Robot {
 				if(obj != null && obj instanceof  Box){
 					box = (Box)obj;
 					environement.robotTakeBox(this,box );
+					appendLog("Robot "+id+" souléve unee box");
 					state = State.haveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
@@ -185,7 +188,7 @@ public class RobotImpl extends Robot {
 				if(localEnv.get(newPosition) == null ){
 					if(direction == Direction.unknown || direction == Direction.left ){
 						direction = Direction.left;
-						System.out.println("Robot "+id+"avance à gauche");
+						appendLog("Robot "+id+"avance à gauche");
 		    			return newPosition;
 					}
 	    			
@@ -201,13 +204,14 @@ public class RobotImpl extends Robot {
 				if(obj != null && obj instanceof  Box){
 					box = (Box)obj;
 					environement.robotTakeBox(this, box);
+					appendLog("Robot "+id+" souléve unee box");
 					state = State.haveBox;
 					return (new Position(position.getX(), position.getY()));
 				}			
 				if( obj == null ){		
 					if(direction == Direction.unknown || direction == Direction.right ){
 						direction = Direction.right;
-						System.out.println("Robot "+id+"avance à droite");
+						appendLog("Robot "+id+"avance à droite");
 		    			return newPosition;
 					}
 	    			
@@ -221,13 +225,14 @@ public class RobotImpl extends Robot {
     			obj = localEnv.get(newPosition);
 				if(obj != null && obj instanceof  Box){
 					environement.robotTakeBox(this, (Box)obj);
+					appendLog("Robot "+id+" souléve unee box");
 					state = State.haveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
     			
     			if(localEnv.get(newPosition) == null){
     				
-    					System.out.println("Robot "+id+"recule");
+    					appendLog("Robot "+id+"recule");
             			return newPosition;
     				
         			
@@ -242,12 +247,13 @@ public class RobotImpl extends Robot {
 					
 				if(dansDepZon(newPosition.getX(), newPosition.getY())){
 					environement.robotPutBox(this, box);
+					appendLog("Robot "+id+" dépose unee box");
 					state = State.noHaveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{
 					
-						System.out.println("Robot "+id+"avance devant");
+						appendLog("Robot "+id+"avance devant");
 						return newPosition;
 					
 					
@@ -259,13 +265,14 @@ public class RobotImpl extends Robot {
 				
 				if(dansDepZon(newPosition.getX(), newPosition.getY())){
 					environement.robotPutBox(this, box);
+					appendLog("Robot "+id+" dépose unee box");
 					state = State.noHaveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{
 					if(direction == Direction.unknown || direction == Direction.right ){
 						direction = Direction.right;
-						System.out.println("Robot "+id+"avance à gauche");
+						appendLog("Robot "+id+"avance à gauche");
 						return newPosition;
 					}
 					
@@ -277,13 +284,14 @@ public class RobotImpl extends Robot {
     			
     			if(dansDepZon(newPosition.getX(), newPosition.getY())){
 					environement.robotPutBox(this, box);
+					appendLog("Robot "+id+" dépose unee box");
 					state = State.noHaveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{
 					if(direction == Direction.unknown || direction == Direction.left ){
 						direction = Direction.left;
-						System.out.println("Robot "+id+"avance à droite");
+						appendLog("Robot "+id+"avance à droite");
 		    			return newPosition;
 					}
 					
@@ -294,11 +302,12 @@ public class RobotImpl extends Robot {
 			if(localEnv.get(newPosition) == null && newPosition.getX() >= 0){
 				if(dansDepZon(newPosition.getX(), newPosition.getY())){
 					environement.robotPutBox(this, box);
+					appendLog("Robot "+id+" dépose unee box");
 					state = State.noHaveBox;
 					return (new Position(position.getX(), position.getY()));
 				}
 				else{					
-						System.out.println("Robot "+id+"avance derrière");
+						appendLog("Robot "+id+"avance derrière");
 						return newPosition;
 						
 				}	
