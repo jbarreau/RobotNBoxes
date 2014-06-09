@@ -129,11 +129,18 @@ public class GUIImpl implements GUI {
 			if (robots.get(r) == null){
 				System.out.println("null pos for robot");
 			}
-            if (r.getBox() == null) {
+			
+			ret.put(robots.get(r), MapObject.RobotFull);
+			if (r.getState() == false) {
+				ret.put(robots.get(r), MapObject.RobotEmpty);
+        	} else {
+        		ret.put(robots.get(r), MapObject.RobotFull);
+        	}
+			/*if (r.getBox() == null) {
                 ret.put(robots.get(r), MapObject.RobotEmpty);
             } else {
                 ret.put(robots.get(r), MapObject.RobotFull);
-            }
+            }*/
         }
         for (Box b : boxes.keySet()) {
             if (boxes.get(b) == null){

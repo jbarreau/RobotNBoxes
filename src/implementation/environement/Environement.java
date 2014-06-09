@@ -17,7 +17,11 @@ import java.util.*;
  * Created by julien on 07/06/14.
  */
 public class Environement implements IEnvironement, IGUIEnvironement, IEnvManager, IRobotEnvironement, Serializable {
-    int boxesUp = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5331068523188525395L;
+	int boxesUp = 0;
     int boxesDown = 0;
     //List<Robot> robots = new LinkedList<Robot>();
     Map<Robot, Position> robotMap = new HashMap<Robot, Position>();
@@ -54,7 +58,7 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
             }
         }
     }
-    
+
     private void randomCorridor() {
         obstacleMap.clear();
         int newYCorr_1 = r.nextInt(30);
@@ -73,7 +77,10 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
     private Robot getRobotKey(Map<Robot, Position> map, Position p) {
         Robot key = null;
+        System.out.println("size :"+map.size());
         for (Robot mapKey : map.keySet()) {
+        	System.out.println("robo :"+mapKey);
+        	System.out.println("position :"+map.get(mapKey));
             if (map.get(mapKey).equals(p)) {
                 key = mapKey;
                 break;
@@ -129,7 +136,8 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
 	@Override
 	public void robotMoved(Robot robot) {
-		robotMap.put(robot, new Position(robot.getPosition().getX(), robot.getPosition().getY()));
+		System.out.println("testeeeee  "+robot.getPosition().getX()+" "+ robot.getPosition().getY());
+		robotMap.put(robot, robot.getPosition());
 	}
 
 	@Override
@@ -152,7 +160,7 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 	
 	@Override
 	public void robotCreated(Robot robot) {
-		robotMap.put(robot, new Position(robot.getPosition().getX(), robot.getPosition().getY()));
+		robotMap.put(robot, robot.getPosition());
 	}
 
 	@Override
@@ -162,12 +170,6 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
 	@Override
     public Serializable SerializeSystem() {
-        List<Serializable> ret = new ArrayList<Serializable>();
-        ret.add(new Position(0, 0));
-        ret.add(new Position(1, 1));
-        ret.add(new Position(2, 2));
-        ret.add(new Position(3, 3));
-        //return (Serializable)ret;
         return this;
     }
 
@@ -198,7 +200,7 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 			p = new Position(r.nextInt(30),r.nextInt(25));
 		}
 		Robot robot = new RobotImpl(p, this, nextId());
-		robotMap.put(robot, new Position(robot.getPosition().getX(), robot.getPosition().getY()));
+		robotMap.put(robot, p);
 	}
 
 	@Override

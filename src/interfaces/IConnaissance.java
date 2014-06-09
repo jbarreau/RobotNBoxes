@@ -9,4 +9,6 @@ public interface IConnaissance {
     public Position getPosition();
 
     public Box getBox(); //return null if no getBox
+    
+    public boolean getState();
 }
