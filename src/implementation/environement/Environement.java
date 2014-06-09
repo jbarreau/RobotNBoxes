@@ -72,7 +72,10 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
     	
     	/*Robot r = new RobotImpl(new Position(robotX, nextRobotY), Environement.getInstance(), nextId());
     	nextRobotY++;*/
-    	Robot r = new RobotImpl(new Position(15, 15), Environement.getInstance(), nextId());
+    	Random rand = new Random();
+    	int x = 10 + rand.nextInt(25 - 10);
+    	int y = 1 + rand.nextInt(30 - 1);
+    	Robot r = new RobotImpl(new Position(x, y), Environement.getInstance(), nextId());
         robots.add(r);
         return r;
     }
