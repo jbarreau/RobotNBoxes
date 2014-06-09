@@ -111,6 +111,7 @@ public class RobotImpl extends Robot {
 		if(state == State.noHaveBox){
 			newPosition = new Position (position.getX()-1, position.getY());
 			if( newPosition.getX() >= 0){
+				System.out.println("pass check devant");
 				obj = localEnv.get(newPosition);
 							
 				if(obj != null && obj instanceof  Box){
@@ -128,7 +129,7 @@ public class RobotImpl extends Robot {
 	
 			newPosition = new Position (position.getX(), position.getY()+1);
 			if(newPosition.getY() <= 29){
-				
+				System.out.println("pass check gauche");
 				obj = localEnv.get(newPosition);
 				if(obj != null && obj instanceof  Box){
 					box = (Box)obj;
@@ -146,6 +147,7 @@ public class RobotImpl extends Robot {
 			
 			newPosition = new Position (position.getX(), position.getY()-1);
 			if(newPosition.getY() >= 0){
+				System.out.println("pass check droite");
 				obj = localEnv.get(newPosition);
 				if(obj != null && obj instanceof  Box){
 					box = (Box)obj;
@@ -161,6 +163,7 @@ public class RobotImpl extends Robot {
 					
     		newPosition = new Position (position.getX()+1, position.getY());
     		if(newPosition.getX() <= maxX){
+    			System.out.println("pass check recule");
     			obj = localEnv.get(newPosition);
 				if(obj != null && obj instanceof  Box){
 					environement.robotTakeBox(this, (Box)obj);
