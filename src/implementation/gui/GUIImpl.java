@@ -5,21 +5,43 @@ import implementation.environement.Environement;
 import implementation.gameManager.GameManager;
 import implementation.robot.Robot;
 import interfaces.MapObject;
-import objet.Box;
-import objet.Obstacle;
-import objet.Position;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.JSlider;
+import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import objet.Box;
+import objet.Obstacle;
+import objet.Position;
+import javax.swing.JPanel;
+
+//to change UI
+import implementation.gui.newUI.MapView;
+//import implementation.gui.MapView;
 public class GUIImpl implements GUI {
     private GameManager gameManager;
 
@@ -38,6 +60,18 @@ public class GUIImpl implements GUI {
 	private JButton save;
 	private JToolBar toolBar_1;
 	private MapView mapView;
+	//private MapView mapView;
+	
+	
+
+	public static Color colorBackGround = Color.WHITE;
+	public static Color colorBorder = Color.BLACK;
+	public static Color colorBox = Color.YELLOW;
+	public static Color colorRobot = Color.BLUE;
+	public static Color colorRobotWithBox = Color.GREEN;
+	public static Color colorObstacle = Color.GRAY;
+	public static Color colorZoneFrom = Color.LIGHT_GRAY;
+	public static Color colorZoneTo = colorZoneFrom;
 
     /**
      * Create the application.
@@ -69,7 +103,18 @@ public class GUIImpl implements GUI {
         });
     }
 
+    @Override
+	public Map<Position, Robot> getRobotsWithPosition() {
+    	Map<Position, Robot> ret = new HashMap<Position, Robot>();
+    	Map<Robot,Position> robots = Environement.getInstance().getRobotsGUI();
 
+        for (Robot r : robots.keySet()) {
+        	ret.put(robots.get(r), r);
+        }
+    	return ret;
+	}
+
+	@Override
     public Map<Position, MapObject> update() {
         Map<Position, MapObject> ret = new HashMap<Position, MapObject>();
 		Map<Box,Position> boxes = getBoxes();
@@ -131,9 +176,9 @@ public class GUIImpl implements GUI {
 		frmSmaalViewer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {55};
-		gridBagLayout.rowHeights = new int[] {28, 23, 30, 1};
+		gridBagLayout.rowHeights = new int[] {28, 23, 30};
 		gridBagLayout.columnWeights = new double[]{1.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0};
 		frmSmaalViewer.getContentPane().setLayout(gridBagLayout);
 		
 		toolBar = new JToolBar();
@@ -146,14 +191,6 @@ public class GUIImpl implements GUI {
 		gbc_toolBar.gridx = 0;
 		gbc_toolBar.gridy = 0;
 		frmSmaalViewer.getContentPane().add(toolBar, gbc_toolBar);
-		
-		JBPause = new JButton("pause");
-		JBPause.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-                gameManager.pause();
-            }
-        });
         JBPlay = new JButton("play");
 		JBPlay.addActionListener(new ActionListener() {
 			@Override
@@ -175,8 +212,16 @@ public class GUIImpl implements GUI {
                 Environement.getInstance().createRobot();
             }
         });
-        toolBar.add(JBPause);
         toolBar.add(JBAddRobot);
+        
+        JBPause = new JButton("pause");
+        JBPause.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent arg0) {
+                gameManager.pause();
+            }
+        });
+        toolBar.add(JBPause);
         toolBar.add(JBPlay);
         toolBar.add(JBStop);
 
@@ -231,7 +276,7 @@ public class GUIImpl implements GUI {
 		JBChange = new JButton("change corridors");
 		toolBar_1.add(JBChange);
 		
-		mapView = new MapView(0, 0, this);
+		mapView = new MapView(this);
 		GridBagConstraints gbc_mapView = new GridBagConstraints();
 		gbc_mapView.insets = new Insets(0, 0, 5, 0);
 		gbc_mapView.fill = GridBagConstraints.BOTH;

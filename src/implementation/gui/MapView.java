@@ -15,22 +15,14 @@ public class MapView extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static int refreshDelay = 500;//milliseconds
-	private static Color colorBackGround = Color.WHITE;
-	private static Color colorBorder = Color.BLACK;
-	private static Color colorBox = Color.YELLOW;
-	private static Color colorRobot = Color.BLUE;
-	private static Color colorRobotWithBox = Color.GREEN;
-	private static Color colorObstacle = Color.GRAY;
-	private static Color colorZoneFrom = Color.LIGHT_GRAY;
-	private static Color colorZoneTo = colorZoneFrom;
+	private static int refreshDelay = 50;//milliseconds
 
 	
 	private static int mapWidth = 80 ; //79 mesured
 	private static int mapHeight = 30; // 29.6 mesured
 	private int screenWidth ;
 	private int screenHeight ;
-	private GUIImpl parent;
+	private GUI parent;
 	
 	private double ratio ;
 	
@@ -42,17 +34,17 @@ public class MapView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MapView(int x, int y, GUIImpl Pparent) {
+	public MapView(GUI Pparent) {
 		parent = Pparent;
-		init(x , y);
+		init();
 	}
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public MapView(int x, int y) {
-		init(x , y);
+	public MapView() {
+		init();
 	}
-	public void init(int x , int y){
+	public void init(){
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(null);
 		
@@ -74,6 +66,8 @@ public class MapView extends JPanel {
 		 
 		Thread threadRefresh = new Thread(refreshDatas);
 		threadRefresh.start();
+		
+		
 	}
 
 	@Override
@@ -98,12 +92,12 @@ public class MapView extends JPanel {
 	}
 
 	public void paintZones(Graphics g, Rectangle map){	
-		g.setColor(colorZoneFrom);
+		g.setColor(GUIImpl.colorZoneFrom);
 		g.fillRect(map.x + (int)(zoneFrom.x*ratio), map.y + (int)(zoneFrom.y*ratio), 
 				(int)(zoneFrom.width*ratio), (int)(zoneFrom.height*ratio));
 
 		
-		g.setColor(colorZoneTo);
+		g.setColor(GUIImpl.colorZoneTo);
 		g.fillRect(map.x + (int)(zoneTo.x*ratio), map.y + (int)(zoneTo.y*ratio), 
 				(int)(zoneTo.width*ratio), (int)(zoneTo.height*ratio));
 	}
@@ -116,33 +110,33 @@ public class MapView extends JPanel {
 		for (Position p : data.keySet()){
 			
 			if(data.get(p) == MapObject.None) {//NONE
-				g.setColor(colorBackGround);
+				g.setColor(GUIImpl.colorBackGround);
 				if (inZoneFrom(p))
-					g.setColor(colorZoneFrom);
+					g.setColor(GUIImpl.colorZoneFrom);
 				if (inZoneTo(p))
-					g.setColor(colorZoneTo);
+					g.setColor(GUIImpl.colorZoneTo);
 				
 				g.fillRect(map.x + (int)(p.getX()*ratio), map.y + (int)(p.getY()*ratio), 
 						(int)(1*ratio), (int)(1*ratio));
 			}
 			else if(data.get(p) == MapObject.Box) {//BOX
-				g.setColor(colorBox);
+				g.setColor(GUIImpl.colorBox);
 				g.fillOval(map.x + (int)(p.getX()*ratio), map.y + (int)(p.getY()*ratio), 
 						(int)(1*ratio), (int)(1*ratio));
 			}
 			else if(data.get(p) == MapObject.Obstacle) {//OBSTACLE
-				g.setColor(colorObstacle);
+				g.setColor(GUIImpl.colorObstacle);
 				g.fillRect(map.x + (int)(p.getX()*ratio), map.y + (int)(p.getY()*ratio), 
 						(int)(1*ratio), (int)(1*ratio));
 			}
 			else if(data.get(p) == MapObject.RobotEmpty) {//ROBOT EMPTY
-				g.setColor(colorRobot);
+				g.setColor(GUIImpl.colorRobot);
 				g.fill3DRect(map.x + (int)(p.getX()*ratio), map.y + (int)(p.getY()*ratio) , 
 						(int)(1*ratio), (int)(1*ratio), true);
 				
 			}
 			else if(data.get(p) == MapObject.RobotFull) {//ROBOT FULL
-				g.setColor(colorRobotWithBox);
+				g.setColor(GUIImpl.colorRobotWithBox);
 				g.fillRect(map.x + (int)(p.getX()*ratio), map.y + (int)(p.getY()*ratio), 
 						(int)(1*ratio), (int)(1*ratio));
 			}
@@ -174,14 +168,15 @@ public class MapView extends JPanel {
 		x = (int)((screenWidth - width) /2);
 		y = (int)((screenHeight - height) /2);
 		
-		g.setColor(colorBorder);
+		g.setColor(GUIImpl.colorBorder);
 		g.draw3DRect(x, y, width, height, false);
 		
-		g.setColor(colorBackGround);
+		g.setColor(GUIImpl.colorBackGround);
 		g.fillRect(x+1, y+1, width-2, height-2);
 		Rectangle map = new Rectangle(x+1, y+1, width-2, height-2);	
 
 		paintZones(g, map);
         paintDatas(g, map);
     }
+	
 }

@@ -38,7 +38,7 @@ public class RobotImpl extends Robot {
 
     @Override
     public void play() {
-        System.out.println("play" + id);
+        //System.out.println("play" + id);
         int t = r.nextInt(4);
         if (t == 0) {//gauche
             if (position.getX() > 0)
@@ -50,7 +50,7 @@ public class RobotImpl extends Robot {
             if (position.getY() < 29)
                 position.setY(position.getY() + 1);
         } else if (t == 3) {//droite
-            if (position.getX() < 80)
+            if (position.getX() < 80 -1)
                 position.setX(position.getX() + 1);
         }
     }
@@ -92,5 +92,34 @@ public class RobotImpl extends Robot {
 	}
 */
     /**/
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result
+				+ ((position == null) ? 0 : position.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RobotImpl other = (RobotImpl) obj;
+		if (id != other.id)
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		return true;
+	}
+
+	    
 
 }

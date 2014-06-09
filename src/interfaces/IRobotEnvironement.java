@@ -7,6 +7,7 @@ import objet.Position;
 
 import java.util.Map;
 
+
 public interface IRobotEnvironement {
     //perception
     public Map<Position, Object> getPerception(Robot robot);

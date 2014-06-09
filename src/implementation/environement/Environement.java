@@ -67,7 +67,7 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
     @Override
     public Robot createRobot() {
-        Robot r = new RobotImpl(new Position(15, 15), Environement.getInstance(), nextId());
+        Robot r = new RobotImpl(new Position(15, 15), this, nextId());
         robots.add(r);
         return r;
     }
