@@ -3,13 +3,11 @@ package implementation.gui.newUI;
 import implementation.gui.GUIImpl;
 import implementation.robot.Robot;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class JBRobotEmpty extends JBRobotAbstract {
 	private MapView mapView;

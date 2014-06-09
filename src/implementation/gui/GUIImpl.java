@@ -4,7 +4,6 @@ package implementation.gui;
 import implementation.environement.Environement;
 import implementation.gameManager.GameManager;
 import implementation.robot.Robot;
-import implementation.robot.RobotImpl;
 import interfaces.MapObject;
 
 import java.awt.Color;
@@ -38,8 +37,6 @@ import javax.swing.event.ChangeListener;
 import objet.Box;
 import objet.Obstacle;
 import objet.Position;
-
-import javax.swing.JPanel;
 
 
 //to change UI

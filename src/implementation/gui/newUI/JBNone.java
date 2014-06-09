@@ -2,7 +2,6 @@ package implementation.gui.newUI;
 
 import implementation.gui.GUIImpl;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;

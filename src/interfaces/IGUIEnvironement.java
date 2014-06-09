@@ -1,11 +1,12 @@
 package interfaces;
 
 import implementation.robot.Robot;
+
+import java.util.Map;
+
 import objet.Box;
 import objet.Obstacle;
 import objet.Position;
-
-import java.util.Map;
 
 public interface IGUIEnvironement {
     public Map<Robot, Position> getRobotsGUI();

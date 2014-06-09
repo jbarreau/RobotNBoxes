@@ -6,12 +6,19 @@ import interfaces.IEnvManager;
 import interfaces.IEnvironement;
 import interfaces.IGUIEnvironement;
 import interfaces.IRobotEnvironement;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import com.sun.corba.se.spi.ior.MakeImmutable;
+
 import objet.Box;
 import objet.Obstacle;
 import objet.Position;
-
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * Created by julien on 07/06/14.
@@ -77,11 +84,8 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
     private Robot getRobotKey(Map<Robot, Position> map, Position p) {
         Robot key = null;
-        System.out.println("size :"+map.size());
         for (Robot mapKey : map.keySet()) {
-        	System.out.println("robo :"+mapKey);
-        	System.out.println("position :"+map.get(mapKey));
-            if (map.get(mapKey).equals(p)) {
+        	if ( mapKey.getPosition().equals(p)) {
                 key = mapKey;
                 break;
             }
@@ -117,7 +121,7 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 		for (int i = robot.getPosition().getX()-3 ; i < robot.getPosition().getX()+3 ; i++) {
 			for (int j = robot.getPosition().getY()-3 ; j < robot.getPosition().getY()+3 ; j++) {
 				Position p = new Position(i, j);
-				if(robotMap.containsValue(p)) {
+				if(getRobotKey(robotMap, p) != null) {
 					perceptionMap.put(p, getRobotKey(robotMap, p));
 				}
 				else if(boxMap.containsValue(p)) {
@@ -211,4 +215,5 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 		}
 		return robots;
 	}
+
 }

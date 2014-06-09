@@ -2,10 +2,11 @@ package interfaces;
 
 
 import implementation.robot.Robot;
-import objet.Box;
-import objet.Position;
 
 import java.util.Map;
+
+import objet.Box;
+import objet.Position;
 
 
 public interface IRobotEnvironement {

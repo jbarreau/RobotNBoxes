@@ -4,24 +4,15 @@ import implementation.gui.GUI;
 import implementation.robot.Robot;
 import interfaces.MapObject;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import objet.Position;
-
-import java.awt.Color;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Component;
-import java.awt.FlowLayout;
 
 public class MapView extends JPanel {
 	private static int refreshDelay = 20;//milliseconds

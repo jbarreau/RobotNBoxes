@@ -1,15 +1,12 @@
 package implementation.robot;
 
 import implementation.environement.Environement;
-import objet.Box;
-import objet.Position;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+import objet.Box;
+import objet.Position;
 
 
 public class RobotImpl extends Robot {
@@ -67,9 +64,7 @@ public class RobotImpl extends Robot {
     		return false;
     	return true;
     }
-    public int get(){
-    	return 0;
-    }
+    
     @Override
     public Box getBox() {
         return box;
@@ -86,12 +81,12 @@ public class RobotImpl extends Robot {
         
     	//decider
         newPosition = decider();
-        
+        System.out.println("new position : "+newPosition);
         //agir
         if(newPosition != null){
-        	position = newPosition;
+        	position = new Position(newPosition.getX(), newPosition.getY());
         }
-        else{
+        else {
         	System.out.println("robot meurt");
          	environement.robotKillHimself(this);
         }

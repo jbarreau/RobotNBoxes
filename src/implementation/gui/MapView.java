@@ -1,12 +1,16 @@
 package implementation.gui;
 
 import interfaces.MapObject;
-import objet.Position;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Map;
+
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
+import objet.Position;
 
 
 public class MapView extends JPanel {

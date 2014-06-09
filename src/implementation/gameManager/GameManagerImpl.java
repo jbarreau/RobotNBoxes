@@ -45,7 +45,10 @@ public class GameManagerImpl implements GameManager {
     @Override
     public void stop() {
         stop = true;
-
+        for (Robot r : Environement.getInstance().getRobots()) {
+        	//Create log directorie
+            // write r.getLog(); in log/%r.getId()%.log
+        }
     }
 
     @Override
