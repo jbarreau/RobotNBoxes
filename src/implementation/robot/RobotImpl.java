@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 
 public class RobotImpl extends Robot {
     private enum State{ haveBox, noHaveBox};
@@ -21,6 +23,7 @@ public class RobotImpl extends Robot {
     private int id;
     private StringBuilder log;
     private State state;
+    private Map<Position, Object> localEnv;
 
     public RobotImpl(Position Pposition, Environement e, int Pid) {
         position = Pposition;
@@ -62,12 +65,18 @@ public class RobotImpl extends Robot {
     public void play() {	
         System.out.println("play" + id);
         Position newPosition;
-        newPosition = avancer();
         
+        //percevoir
+    	localEnv = environement.getPerception(this, position.getX(), position.getY());
+        
+    	//decider
+        newPosition = decider();
+        
+        //agir
         if(newPosition != null){
-        	position.setX(newPosition.getX());
-        	position.setY(newPosition.getY());
+        	position = newPosition;
         }
+ 
         
         /*int t = r.nextInt(4);
         if (t == 0) {//gauche
@@ -85,55 +94,109 @@ public class RobotImpl extends Robot {
         }*/
     }
     
-    private Position avancer(){    	
-    	Map<Position, Object> localEnv;
-    	Position newPosition;
-    	Box b;
+    boolean dansDepZon(int x, int y){   	
+    	if((x >= 71 && x <= 80) && (y >= 5 && y <= 25) ){
+    		return true;
+    	}    	
+    	return false; 
+    }
+    
+    private Position decider(){    	
     	
-    	// get localEnv
-    	localEnv = environement.getPerception(this, position.getX(), position.getY());
-    		
+    	Position newPosition;
+    	Object obj;		
     	
 		if(state == State.noHaveBox){
 			newPosition = new Position (position.getX()-1, position.getY());
-			if(localEnv.get(newPosition) == null && newPosition.getX() > 0){		
-				System.out.println("Robot "+id+"avance devant");
-				return newPosition;
+			if( newPosition.getX() >= 0){
+				obj = localEnv.get(newPosition);
+							
+				if(obj != null && obj instanceof  Box){
+					environement.robotTakeBox(this, (Box)obj);
+					state = State.haveBox;
+					return (new Position(position.getX(), position.getY()));
+				}
+				
+				if(obj == null){		
+					System.out.println("Robot "+id+"avance devant");
+					return newPosition;
+				}
 			}
+	
 			newPosition = new Position (position.getX(), position.getY()-1);
-			if(localEnv.get(newPosition) == null && newPosition.getY() > 0){		
-    			System.out.println("Robot "+id+"avance à droite");
-    			return newPosition;
-    		}
+			if(newPosition.getY() >= 0){
+				obj = localEnv.get(newPosition);
+				if(obj != null && obj instanceof  Box){
+					environement.robotTakeBox(this, (Box)obj);
+					state = State.haveBox;
+					return (new Position(position.getX(), position.getY()));
+				}			
+				if( obj == null ){		
+	    			System.out.println("Robot "+id+"avance à droite");
+	    			return newPosition;
+	    		}
+			}
 			newPosition = new Position (position.getX(), position.getY()+1);
-    		if(localEnv.get(newPosition) == null && newPosition.getY() < 29){
-    			System.out.println("Robot "+id+"avance à gauche");
-    			return newPosition;
-    		}
+			if(newPosition.getY() <= 29){
+				
+				obj = localEnv.get(newPosition);
+				if(obj != null && obj instanceof  Box){
+					environement.robotTakeBox(this, (Box)obj);
+					state = State.haveBox;
+					return (new Position(position.getX(), position.getY()));
+				}
+				
+				if(localEnv.get(newPosition) == null ){
+	    			System.out.println("Robot "+id+"avance à gauche");
+	    			return newPosition;
+	    		}
+			}
+			
+    		
     		newPosition = new Position (position.getX()+1, position.getY());
-    		if(localEnv.get(newPosition) == null && newPosition.getX() < 80){
-    			System.out.println("Robot "+id+"recule");
-    			return newPosition;
+    		if(newPosition.getX() <= 80){
+    			obj = localEnv.get(newPosition);
+				if(obj != null && obj instanceof  Box){
+					environement.robotTakeBox(this, (Box)obj);
+					state = State.haveBox;
+					return (new Position(position.getX(), position.getY()));
+				}
+    			
+    			if(localEnv.get(newPosition) == null){
+        			System.out.println("Robot "+id+"recule");
+        			return newPosition;
+        		}
     		}
+    		
 		}
 		else if(state == State.haveBox){
 			newPosition = new Position (position.getX()+1, position.getY());
-			if(localEnv.get(newPosition) == null && newPosition.getX() < 80){		
-				System.out.println("Robot "+id+"avance devant");
-				return newPosition;
+			
+			if(newPosition.getX() <= 80){
+				if(localEnv.get(newPosition) == null ){		
+					
+					if(dansDepZon(newPosition.getX(), newPosition.getY())){
+						environement.robotPutBox(this, box);
+					}
+					else{
+						System.out.println("Robot "+id+"avance devant");
+						return newPosition;
+					}		
+				}
 			}
+			
 			newPosition = new Position (position.getX(), position.getY()+1);
-			if(localEnv.get(newPosition) == null && newPosition.getY() < 29){		
+			if(localEnv.get(newPosition) == null && newPosition.getY() <= 29){		
     			System.out.println("Robot "+id+"avance à gauche");
     			return newPosition;
     		}
 			newPosition = new Position (position.getX(), position.getY()-1);
-    		if(localEnv.get(newPosition) == null && newPosition.getY() > 0){		
+    		if(localEnv.get(newPosition) == null && newPosition.getY() >= 0){		
     			System.out.println("Robot "+id+"avance à droite");
     			return newPosition;
     		}
     		newPosition = new Position (position.getX()-1, position.getY());
-			if(localEnv.get(newPosition) == null && newPosition.getX() > 0){		
+			if(localEnv.get(newPosition) == null && newPosition.getX() >= 0){		
 				System.out.println("Robot "+id+"avance devant");
 				return newPosition;
 			}
