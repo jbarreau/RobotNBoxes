@@ -25,6 +25,8 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
     Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
     private Random r = new Random(Map.class.hashCode());
     private static int ids = 1;
+    private int nextRobotY = 7;
+    private int robotX = 7;
 
     public static int nextId() {
         ids++;
@@ -67,7 +69,10 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
 
     @Override
     public Robot createRobot() {
-        Robot r = new RobotImpl(new Position(15, 15), Environement.getInstance(), nextId());
+    	
+    	/*Robot r = new RobotImpl(new Position(robotX, nextRobotY), Environement.getInstance(), nextId());
+    	nextRobotY++;*/
+    	Robot r = new RobotImpl(new Position(15, 15), Environement.getInstance(), nextId());
         robots.add(r);
         return r;
     }
@@ -153,9 +158,27 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
     }
 
     @Override
-    public Map<Position, Object> getPerception(Robot robot) {
-        return null;
-    }
+    public Map<Position, Object> getPerception(Robot r, int x, int y) {
+		Map<Position, Object> perceptionMap = new HashMap<Position, Object>();
+		for (int i = x-3 ; i < x+3 ; i++) {
+			for (int j = y-3 ; j < y+3 ; j++) {
+				Position p = new Position(i, j);
+				if(robotMap.containsValue(p)) {
+					perceptionMap.put(p, getRobotKey(robotMap, p));
+				}
+				else if(boxMap.containsValue(p)) {
+					perceptionMap.put(p, getBoxKey(boxMap, p));
+				}
+				else if(obstacleMap.containsValue(p)) {
+					perceptionMap.put(p, getObstacleKey(obstacleMap, p));
+				}
+				else {
+					perceptionMap.put(p, null);
+				}
+			}
+		}
+		return perceptionMap;
+	}
 
     @Override
     public void robotMoved(Robot robot, int x, int y) {

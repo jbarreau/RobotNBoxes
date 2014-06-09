@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface IRobotEnvironement {
     //perception
-    public Map<Position, Object> getPerception(Robot robot);
+	public Map<Position, Object> getPerception(Robot r, int x, int y);
 
     // action
     public void robotMoved(Robot robot, int x, int y);
