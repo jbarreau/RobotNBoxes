@@ -19,7 +19,7 @@ import java.util.*;
 public class Environement implements IEnvironement, IGUIEnvironement, IEnvManager, IRobotEnvironement, Serializable {
     int boxesUp = 0;
     int boxesDown = 0;
-    List<Robot> robots = new LinkedList<Robot>();
+    //List<Robot> robots = new LinkedList<Robot>();
     Map<Robot, Position> robotMap = new HashMap<Robot, Position>();
     Map<Box, Position> boxMap = new HashMap<Box, Position>();
     Map<Obstacle, Position> obstacleMap = new HashMap<Obstacle, Position>();
@@ -54,55 +54,7 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
             }
         }
     }
-
-    @Override
-    public Map<Robot, Position> getRobotsGUI() {
-        return robotMap;
-    }
-
-    @Override
-    public List<Robot> getRobots() {
-        return robots;
-    }
-
-    @Override
-    public Robot createRobot() {
-        Robot r = new RobotImpl(new Position(15, 15), this, nextId());
-        robots.add(r);
-        return r;
-    }
-
-    @Override
-    public Map<Box, Position> getBoxes() {
-        return boxMap;
-    }
-
-    @Override
-    public Map<Obstacle, Position> getObstacles() {
-        return obstacleMap;
-    }
-
-    @Override
-    public void changeCorridor() {
-        randomCorridor();
-    }
-
-    @Override
-    public Serializable SerializeSystem() {
-        List<Serializable> ret = new ArrayList<Serializable>();
-        ret.add(new Position(0, 0));
-        ret.add(new Position(1, 1));
-        ret.add(new Position(2, 2));
-        ret.add(new Position(3, 3));
-        //return (Serializable)ret;
-        return this;
-    }
-
-    @Override
-    public void unserializeSystem(Serializable save) {
-        instance = (Environement) save;
-    }
-
+    
     private void randomCorridor() {
         obstacleMap.clear();
         int newYCorr_1 = r.nextInt(30);
@@ -151,35 +103,110 @@ public class Environement implements IEnvironement, IGUIEnvironement, IEnvManage
         }
         return key;
     }
+    
+	@Override
+	public Map<Position, Object> getPerception(Robot robot) {
+		Map<Position, Object> perceptionMap = new HashMap<Position, Object>();
+		for (int i = robot.getPosition().getX()-3 ; i < robot.getPosition().getX()+3 ; i++) {
+			for (int j = robot.getPosition().getY()-3 ; j < robot.getPosition().getY()+3 ; j++) {
+				Position p = new Position(i, j);
+				if(robotMap.containsValue(p)) {
+					perceptionMap.put(p, getRobotKey(robotMap, p));
+				}
+				else if(boxMap.containsValue(p)) {
+					perceptionMap.put(p, getBoxKey(boxMap, p));
+				}
+				else if(obstacleMap.containsValue(p)) {
+					perceptionMap.put(p, getObstacleKey(obstacleMap, p));
+				}
+				else {
+					perceptionMap.put(p, null);
+				}
+			}
+		}
+		return perceptionMap;
+	}
 
-    @Override
-    public Map<Position, Object> getPerception(Robot robot) {
-        return null;
+	@Override
+	public void robotMoved(Robot robot) {
+		robotMap.put(robot, new Position(robot.getPosition().getX(), robot.getPosition().getY()));
+	}
+
+	@Override
+	public void robotTakeBox(Robot robot, Box b) {
+		boxMap.remove(b);
+		boxesUp++;
+	}
+
+	@Override
+	public void robotPutBox(Robot robot, Box b) {
+		boxesDown++;
+	}
+
+	@Override
+	public void robotKillHimself(Robot robot) {
+		robotMap.remove(robot);
+		
+	}
+
+	
+	@Override
+	public void robotCreated(Robot robot) {
+		robotMap.put(robot, new Position(robot.getPosition().getX(), robot.getPosition().getY()));
+	}
+
+	@Override
+	public void changeCorridor() {
+		randomCorridor();
+	}
+
+	@Override
+    public Serializable SerializeSystem() {
+        List<Serializable> ret = new ArrayList<Serializable>();
+        ret.add(new Position(0, 0));
+        ret.add(new Position(1, 1));
+        ret.add(new Position(2, 2));
+        ret.add(new Position(3, 3));
+        //return (Serializable)ret;
+        return this;
     }
 
     @Override
-    public void robotMoved(Robot robot, int x, int y) {
-        robotMap.get(robot).setX(x);
-        robotMap.get(robot).setX(y);
+    public void unserializeSystem(Serializable save) {
+        instance = (Environement) save;
     }
 
-    @Override
-    public void robotTakeBox(Robot robot, Box b) {
-    	boxMap.remove(b);
-    }
+	@Override
+	public Map<Robot, Position> getRobotsGUI() {
+		return robotMap;
+	}
 
-    @Override
-    public void robotPutBox(Robot robot, Box b) {
-    	
-    }
+	@Override
+	public Map<Box, Position> getBoxes() {
+		return boxMap;
+	}
 
-    @Override
-    public void robotKillHimself(Robot robot) {
-    	robotMap.remove(robot);
-    }
+	@Override
+	public Map<Obstacle, Position> getObstacles() {
+		return obstacleMap;
+	}
 
-    @Override
-    public void robotCreated(Robot robot) {
-    	robotMap.put(robot, robot.getPosition());
-    }
+	@Override
+	public void createRobot() {
+		Position p = new Position(r.nextInt(30),r.nextInt(25));
+		while(robotMap.containsValue(p) || boxMap.containsValue(p) || obstacleMap.containsValue(p)) {
+			p = new Position(r.nextInt(30),r.nextInt(25));
+		}
+		Robot robot = new RobotImpl(p, this, nextId());
+		robotMap.put(robot, new Position(robot.getPosition().getX(), robot.getPosition().getY()));
+	}
+
+	@Override
+	public List<Robot> getRobots() {
+		List<Robot> robots = new ArrayList<Robot>();
+		for(Robot robot:robotMap.keySet()) {
+			robots.add(robot);
+		}
+		return robots;
+	}
 }

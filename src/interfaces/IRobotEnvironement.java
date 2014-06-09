@@ -13,7 +13,7 @@ public interface IRobotEnvironement {
     public Map<Position, Object> getPerception(Robot robot);
 
     // action
-    public void robotMoved(Robot robot, int x, int y);
+    public void robotMoved(Robot robot);
 
     public void robotTakeBox(Robot robot, Box b);
 
